@@ -1,7 +1,9 @@
+// 깃허브 협업을 위한 예시 주석입니다. 참고하세요.
+
 // 프론트앤드의 시작점
 
 // app.js는 node module을 로딩하고 초기 initialize해야 하는 변수나 Object를 선언하고 Router에 유입이 이루어지는 그 유입점의 역할을 하는 JavaScript
-//App.js
+
 import React, { Suspense } from "react";
 import {
     BrowserRouter as Router,
