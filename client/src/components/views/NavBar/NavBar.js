@@ -29,7 +29,7 @@ function NavBar() {
     // menu__logo, menu__container 등은 Sections/Navbar.css에서 정의해 놓았음
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
       <div className="menu__logo">
-        <a href="/">홍수저</a>
+        <a href="/">맛있홍</a>
       </div>
       <div className="menu__container">
         <div className="menu_left">
