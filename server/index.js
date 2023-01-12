@@ -1,5 +1,3 @@
-// just branch test
-
 // 백앤드의 시작점
 
 const express = require('express')  // node.js의 웹 프레임워크
