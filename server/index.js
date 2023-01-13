@@ -1,3 +1,5 @@
+// 백앤드의 시작점
+
 const express = require('express')  // node.js의 웹 프레임워크
 const app = express()
 const path = require("path"); // 여러개의 파일을 폴더로 만들고, 각 폴더의 파일에 접근하기 위해 path모듈 사용
