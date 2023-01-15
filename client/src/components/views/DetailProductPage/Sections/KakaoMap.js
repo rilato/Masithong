@@ -43,7 +43,7 @@ function KakaoMap(props) {
     const container = document.getElementById("map");   // 지도를 담을 영역의 DOM 레퍼런스
     const options = {
       center: new window.kakao.maps.LatLng(latitude,longitude),      // 지도 중심의 좌표
-      level: 3,       // 지도의 크기 관련
+      level: 2,       // 지도의 크기 관련
     };
 
     const map = new window.kakao.maps.Map(container, options);  // 지도 생성 및 객체 리턴, 윈도우 전역에 카카오 api 객체가 적용되므로 window 사용
@@ -61,7 +61,9 @@ function KakaoMap(props) {
     marker.setMap(map);
   };
 
-  return <div id="map" style={{ width: "100%", height: "50%", color: "#000", fontWeight: "bold", textAlign:"center"}}></div>;
+  // %로 간격 맞추면, 사진의 유무에 따라 지도의 크기가 바뀌는 문제 발생. 아마 DetailProductPage.js에서 gutter 때문일 수도 있음
+  // 임시방편으로 px로 해놓았지만, 노트북의 해상도에 따라 지도가 다르게 보이기 때문에, 심미적으로 예뻐보이지 않음
+  return <div id="map" style={{ width: "1000px", height: "500px", color: "#000", fontWeight: "bold", textAlign:"center"}}></div>;
 }
 
 export default KakaoMap;

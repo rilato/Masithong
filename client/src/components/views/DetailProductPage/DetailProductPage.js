@@ -72,7 +72,8 @@ function DetailProductPage(props) {
         로그인된 유저의 정보가 localStorage에 저장되어있음 */}
         <Favorite productInfo={Product} productId={productId} userFrom={localStorage.getItem('userId')} />
       </div>
-
+      
+      {/* gutter에서 두 개로 화면을 분할하기 때문에 지도를 새로고침했을 때 문제가 발생하는 듯 */}
       <Row gutter={[16, 16]} >
           {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
           <Col lg={12} sm={24}>
