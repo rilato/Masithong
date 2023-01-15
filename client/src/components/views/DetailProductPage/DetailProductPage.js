@@ -8,6 +8,7 @@ import ProductImage from './Sections/ProductImage';
 import ProductInfo from './Sections/ProductInfo';
 import Comments from './Sections/Comments';
 import Favorite from './Sections/Favorite';
+import KakaoMap from './Sections/KakaoMap';
 
 function DetailProductPage(props) {
   //const productId = props.match.params.productId
@@ -78,6 +79,7 @@ function DetailProductPage(props) {
           <Col lg={12} sm={24}>
               {/* ProductInfo.js에서 가져온 내용을 위치시키는 곳 */}
               <ProductInfo detail={Product} />
+              <KakaoMap></KakaoMap>
               {/* Comments.js에서 props로 postId를 넘겨주기 위해, CommentLists=~~~의 코드를 작성 */}
               {/* refreshFunction은 결국 updateComment 함수를 실행하는 것 */}
               {/* 기존 코드와 달리, ProductInfo 하단에 위치시켜, 댓글 UI를 더 깔끔하게 정리 */}
