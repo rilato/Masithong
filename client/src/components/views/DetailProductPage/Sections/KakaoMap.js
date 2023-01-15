@@ -35,24 +35,19 @@ function KakaoMap(props) {
   useEffect(() => {
     const container = document.getElementById("map");   // 지도를 담을 영역의 DOM 레퍼런스
     const options = {
-      center: new window.kakao.maps.LatLng(
-        latitude,
-        longitude
-      ),      // 지도 중심의 좌표
+      center: new window.kakao.maps.LatLng(latitude,longitude),      // 지도 중심의 좌표
       level: 3,       // 지도의 크기 관련
     };
 
     const map = new window.kakao.maps.Map(container, options);  // 지도 생성 및 객체 리턴, 윈도우 전역에 카카오 api 객체가 적용되므로 window 사용
 
     //마커가 표시 될 위치
-    let markerPosition = new window.kakao.maps.LatLng(
-        latitude,
-        longitude,
-    );
+    let markerPosition = new window.kakao.maps.LatLng(latitude,longitude);
 
     // 마커를 생성
     let marker = new window.kakao.maps.Marker({
         position: markerPosition,
+        title: title
     });
 
     // 마커를 지도 위에 표시
