@@ -1,4 +1,7 @@
 // 등록한 상품의 상세정보를 볼 수 있는 페이지
+/* props는 부모 컴포넌트로부터 자식 컴포넌트에게 전달 혹은 상속되는 속성값을 말한다.
+   이 값은 자식 컴포넌트에서 활용은 가능하지만 수정은 불가하다.
+   이 값의 변경이 필요하다면 반드시 부모에서 변경해야만 한다.*/
 
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
@@ -80,7 +83,7 @@ function DetailProductPage(props) {
               {/* ProductInfo.js에서 가져온 내용을 위치시키는 곳 */}
               <ProductInfo detail={Product} />
               {/* KakaoMap.js에서 가져온 내용을 위치시키는 곳 */}
-              <KakaoMap productInfo={Product}></KakaoMap>
+              <KakaoMap productInfo={Product} />
               {/* Comments.js에서 props로 postId를 넘겨주기 위해, CommentLists=~~~의 코드를 작성 */}
               {/* refreshFunction은 결국 updateComment 함수를 실행하는 것 */}
               {/* 기존 코드와 달리, ProductInfo 하단에 위치시켜, 댓글 UI를 더 깔끔하게 정리 */}
