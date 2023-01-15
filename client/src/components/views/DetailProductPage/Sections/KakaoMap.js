@@ -25,6 +25,8 @@ export default KakaoMap;*/
 // 아래에 있는 코드 중 const를 let으로 바꾸고 저장, 또는 let을 const로 바꾸고 저장하면 웹 페이지에 일시적으로 지도에 위치가 표시됨
 // 하지만 페이지를 새로고침하거나 메인 화면으로 나갔다오면, 지도가 사라지는 문제 발생
 
+// 깃허브에 올려놓은 것과 다른, 또 다른 버전
+
 import { useEffect } from "react";
 
 // props를 통해 부모컴포넌트로부터 자식컴포넌트로 product내용을 상속하였음
@@ -34,7 +36,10 @@ function KakaoMap(props) {
   const title = props.productInfo.title;
   
   useEffect(() => {
-    // 마커가 문제가 아니라, 지도 자체가 새로고침되면 안 뜨는 오류 발생, props가 1회성인듯
+    mapscript();
+  }, [latitude, longitude]);  // 배열에 값을 넣어줘야 새로고침할 때 맵이 제대로 작동함 (props가 1회성으로 작동하는 것을 방지)
+
+  const mapscript = () => {
     const container = document.getElementById("map");   // 지도를 담을 영역의 DOM 레퍼런스
     const options = {
       center: new window.kakao.maps.LatLng(latitude,longitude),      // 지도 중심의 좌표
@@ -54,9 +59,9 @@ function KakaoMap(props) {
 
     // 마커를 지도 위에 표시
     marker.setMap(map);
-  }, []);
-  
+  };
+
   return <div id="map" style={{ width: "100%", height: "50%", color: "#000", fontWeight: "bold", textAlign:"center"}}></div>;
-};
+}
 
 export default KakaoMap;
