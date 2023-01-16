@@ -65,7 +65,8 @@ function RightMenu(props) {
       </Menu>
     )
   }
-  else  if (user.userData && user.userData.isAuth && !user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
+  //로그인 되었는데, 그게 관리자라면
+  else  if (user.userData && user.userData.isAuth && !user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장. idAdmin은 redux devtool에서 확인할 수 있음
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="mypage">
