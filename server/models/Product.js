@@ -37,6 +37,14 @@ const productSchema = mongoose.Schema({
     views: {
         type: Number,
         default: 0
+    },
+    latitude: {
+        type: Number,
+        default: 37.55097217656227
+    },
+    longitude: {
+        type: Number,
+        default: 126.92560428790415
     }
 }, { timestamps: true })
 
