@@ -35,6 +35,15 @@ function UploadProductPage(props) {
     // 그렇게 하기 위해 아래에 refreshFunction라는 props를 따로 만들어줘야 함
     const [Images, setImages] = useState([])
 
+    //주소 State설정
+    const [Address,SetAddress]=useState("")
+
+    //위도 State설정
+    const [Latitude,SetLatitude]=useState("")
+
+    //경도 State설정
+    const [Longitude,SetLongitude]=useState("")
+
     // 위에서 설정한 state를 실제로 입력되도록 하는 event 설정
     const titleChangeHandler = (event) => {
         setTitle(event.currentTarget.value)
@@ -56,18 +65,31 @@ function UploadProductPage(props) {
         setImages(newImages)
     }
 
+    const addressChangeHandler = (event) => {
+        SetAddress(event.currentTarget.value)
+    }
+
+    const latitudeChangeHandler = (event) => {
+        SetLatitude(event.currentTarget.value)
+    }
+
+    const longitudeChangeHandler = (event) => {
+        SetLongitude(event.currentTarget.value)
+    } 
+
     // 가격, 메뉴 이름을 쓸 수 있도록 Handler 설정, DB 변경 필요
 
     const submitHandler = (event) => {
         event.preventDefault(); // 페이지가 자동적으로 refresh되지 않도록 설정
         // 모든 칸이 채워지지 않은 경우, 제출할 수 없도록 함
-        if (!Title || !Description || !Price || !RestaurantType || Images.length === 0) {
+        if (!Title || !Description || !Price || !RestaurantType || Images.length === 0 || !Latitude || !Longitude || !Address) {
             return alert(" 모든 값을 넣어주셔야 합니다.")
         }
 
         //서버에 채운 값들을 request로 보낸다.
 
         // post request를 쓰기 위해서는 body를 채워줘야 함
+       
         const body = {
             //로그인 된 사람의 ID 
             // props를 이용해서 auth.js에서 user의 id를 가져온다.
@@ -76,7 +98,10 @@ function UploadProductPage(props) {
             description: Description,
             price: Price,
             images: Images,
-            restaurantTypes: RestaurantType
+            restaurantTypes: RestaurantType,
+            address: Address,
+            latitude: Latitude,
+            longitude: Longitude,
         }
 
         // 저장할 내용을 백엔드로 보내기 위해 post request
@@ -151,10 +176,30 @@ function UploadProductPage(props) {
                         <br />
                         <br />
                     </Col>
+                    <Col lg={12} xs={24}>
+                        <label>위도값</label>
+                        <TextArea onChange={latitudeChangeHandler} value={Latitude} />
+                        <br />
+                        <br />
+                    </Col>
+                    <Col lg={12} xs={24}>
+                        <label>경도값</label>
+                        <TextArea onChange={longitudeChangeHandler} value={Longitude} />
+                        <br />
+                        <br />
+                    </Col>
+                    <Col lg={12} xs={24}>
+                        <label>도로명주소</label>
+                        <TextArea onChange={addressChangeHandler} value={Address} />
+                        <br />
+                        <br />
+                    </Col>
                 </Row>
                 <Button htmlType="submit">
                     확인
                 </Button>
+                <br />
+                <br />
             </Form>
         </div>
     )
