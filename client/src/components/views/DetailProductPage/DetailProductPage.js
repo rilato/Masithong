@@ -1,4 +1,7 @@
 // 등록한 상품의 상세정보를 볼 수 있는 페이지
+/* props는 부모 컴포넌트로부터 자식 컴포넌트에게 전달 혹은 상속되는 속성값을 말한다.
+   이 값은 자식 컴포넌트에서 활용은 가능하지만 수정은 불가하다.
+   이 값의 변경이 필요하다면 반드시 부모에서 변경해야만 한다.*/
 
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
@@ -8,6 +11,7 @@ import ProductImage from './Sections/ProductImage';
 import ProductInfo from './Sections/ProductInfo';
 import Comments from './Sections/Comments';
 import Favorite from './Sections/Favorite';
+import KakaoMap from './Sections/KakaoMap';
 
 function DetailProductPage(props) {
   //const productId = props.match.params.productId
@@ -68,7 +72,8 @@ function DetailProductPage(props) {
         로그인된 유저의 정보가 localStorage에 저장되어있음 */}
         <Favorite productInfo={Product} productId={productId} userFrom={localStorage.getItem('userId')} />
       </div>
-
+      
+      {/* gutter에서 두 개로 화면을 분할하기 때문에 지도를 새로고침했을 때 문제가 발생하는 듯 */}
       <Row gutter={[16, 16]} >
           {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
           <Col lg={12} sm={24}>
@@ -78,6 +83,8 @@ function DetailProductPage(props) {
           <Col lg={12} sm={24}>
               {/* ProductInfo.js에서 가져온 내용을 위치시키는 곳 */}
               <ProductInfo detail={Product} />
+              {/* KakaoMap.js에서 가져온 내용을 위치시키는 곳 */}
+              <KakaoMap productInfo={Product} />
               {/* Comments.js에서 props로 postId를 넘겨주기 위해, CommentLists=~~~의 코드를 작성 */}
               {/* refreshFunction은 결국 updateComment 함수를 실행하는 것 */}
               {/* 기존 코드와 달리, ProductInfo 하단에 위치시켜, 댓글 UI를 더 깔끔하게 정리 */}
