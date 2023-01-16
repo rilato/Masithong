@@ -21,11 +21,9 @@ function KakaoMap(props) {
 
 export default KakaoMap;*/
 
-// 아래 코드의 문제점
-// 아래에 있는 코드 중 const를 let으로 바꾸고 저장, 또는 let을 const로 바꾸고 저장하면 웹 페이지에 일시적으로 지도에 위치가 표시됨
-// 하지만 페이지를 새로고침하거나 메인 화면으로 나갔다오면, 지도가 사라지는 문제 발생
 
-// 깃허브에 올려놓은 것과 다른, 또 다른 버전
+
+// 최종 수정본
 
 import { useEffect } from "react";
 
@@ -61,9 +59,8 @@ function KakaoMap(props) {
     marker.setMap(map);
   };
 
-  // %로 간격 맞추면, 사진의 유무에 따라 지도의 크기가 바뀌는 문제 발생. 아마 DetailProductPage.js에서 gutter 때문일 수도 있음
-  // 임시방편으로 px로 해놓았지만, 노트북의 해상도에 따라 지도가 다르게 보이기 때문에, 심미적으로 예뻐보이지 않음
-  return <div id="map" style={{ width: "1000px", height: "500px", color: "#000", fontWeight: "bold", textAlign:"center"}}></div>;
+  // 좌우는 %로, 상하는 px로 고정시켜야 지도가 균일하게 나오고, 새로고침 시 공백이 발생하지 않음
+  return <div id="map" style={{ width: "100%", height: "400px", color: "#000", fontWeight: "bold", textAlign:"center"}}></div>;
 }
 
 export default KakaoMap;
