@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 // 각 코드는 메인 화면의 우측 상단 버튼처럼 보이게 하므로, 이렇게 코드를 짜는구나 라고 알면 될 듯
 function RightMenu(props) {
+  
   const user = useSelector(state => state.user)
   const navigate = useNavigate();
 
@@ -51,7 +52,7 @@ function RightMenu(props) {
 
   // 위 코드의 문제를 해결하기 위해, 로그아웃 안하고 껐다가 다시 켜면 이미 로그인 된 상태로 시작. 쿠키에 로그인 데이터 저장
   // userData가 존재하고, isAuth(로그인)된 상태라면
-  if (user.userData && user.userData.isAuth) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
+  if (user.userData && user.userData.isAuth && user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="upload">
@@ -63,7 +64,22 @@ function RightMenu(props) {
         </Menu.Item>
       </Menu>
     )
-  } else {  // 로그인 안했을 때 우측 상단에 보이는 메뉴들
+  }
+  //로그인 되었는데, 그게 관리자라면
+  else  if (user.userData && user.userData.isAuth && !user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장. idAdmin은 redux devtool에서 확인할 수 있음
+    return (
+      <Menu mode={props.mode}>
+        <Menu.Item key="mypage">
+          마이페이지
+        </Menu.Item>
+        <Menu.Item key="logout">
+          <a onClick={logoutHandler}>로그아웃</a>
+        </Menu.Item>
+      </Menu>
+    )
+  }
+  
+   else {  // 로그인 안했을 때 우측 상단에 보이는 메뉴들
     return (
       <Menu mode={props.mode}>
       <Menu.Item key="mail">

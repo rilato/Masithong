@@ -3,6 +3,7 @@
 import React from 'react'
 import { Button, Descriptions } from 'antd'; // 상품 상세 페이지에서 design을 위해 필요한 애들 import
 //import { useDispatch } from 'react-redux';
+import kakaoMap from './KakaoMap';
 
 function ProductInfo(props) {
     return (
@@ -19,9 +20,12 @@ function ProductInfo(props) {
                 <Descriptions.Item label="식당 상세정보 링크"><a href={`https://search.naver.com/search.naver?&where=nexearch&query=${props.detail.title}`}>이동하기</a></Descriptions.Item>
                 
                 <Descriptions.Item label="식당 위치정보 링크"><a href={`https://map.naver.com/v5/search/${props.detail.title}`}>이동하기</a></Descriptions.Item>
+
+                <Descriptions.Item label="식당 주소">{props.detail.address}</Descriptions.Item>
+
                 
             </Descriptions>
-
+            
             <br />
             <br />
             <br />

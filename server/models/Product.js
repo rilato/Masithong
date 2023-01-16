@@ -39,12 +39,14 @@ const productSchema = mongoose.Schema({
         default: 0
     },
     latitude: {
-        type: Number,
-        default: 37.55097217656227
+        type: String,
     },
     longitude: {
-        type: Number,
-        default: 126.92560428790415
+        type: String,
+    },
+    address: {
+        type: String,
+        default: "홍대 주변 어딘가"
     }
 }, { timestamps: true })
 
