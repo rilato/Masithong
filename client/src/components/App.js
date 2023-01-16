@@ -63,7 +63,7 @@ function App() {
                         />
                         <Route
                             path="/product/upload"
-                            element={Auth(UploadProductPage, true)}
+                            element={Auth(UploadProductPage,true, true)}
                         />
                         {/* product의 _id를 endpointer로 넣기 위해서는 :를 꼭 포함시켜야함!
             그래야 product/_id형식의 endpointer로 인식 */}
