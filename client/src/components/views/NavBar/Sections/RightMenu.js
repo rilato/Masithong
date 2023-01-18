@@ -51,7 +51,7 @@ function RightMenu(props) {
   }*/
 
   // 위 코드의 문제를 해결하기 위해, 로그아웃 안하고 껐다가 다시 켜면 이미 로그인 된 상태로 시작. 쿠키에 로그인 데이터 저장
-  // userData가 존재하고, isAuth(로그인)된 상태라면
+  // userData가 존재하고, isAuth(로그인)된 상태면서, 관리자라면
   if (user.userData && user.userData.isAuth && user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
     return (
       <Menu mode={props.mode}>
@@ -65,11 +65,17 @@ function RightMenu(props) {
       </Menu>
     )
   }
-  //로그인 되었는데, 그게 관리자라면
-  else  if (user.userData && user.userData.isAuth && !user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장. idAdmin은 redux devtool에서 확인할 수 있음
+
+  // userData가 존재하고, isAuth(로그인)된 상태면서, 관리자가 아니라면
+  else if (user.userData && user.userData.isAuth && !user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
     return (
       <Menu mode={props.mode}>
+        {/** 관리자에게 업로드를 요청하는 부분, 아직 미구현 */}
+        <Menu.Item key="requestUpload">
+          식당 업로드 요청
+        </Menu.Item>
         <Menu.Item key="mypage">
+          {/** 아직 구현되지 않은 부분, onClick event를 추가하여, 마이페이지로 이동하도록 코딩 필요 */}
           마이페이지
         </Menu.Item>
         <Menu.Item key="logout">
