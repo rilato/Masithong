@@ -55,6 +55,10 @@ function RightMenu(props) {
   if (user.userData && user.userData.isAuth && user.userData.isAdmin) { // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
     return (
       <Menu mode={props.mode}>
+        <Menu.Item key="approveRestaurant">
+          {/* Favorite 버튼 누르면 /favorite endpointer에 해당하는 페이지로 갈 수 있도록 href지정 */}
+          <a href="/approveRestaurant">업로드 요청</a>
+        </Menu.Item>
         <Menu.Item key="upload">
           {/* a href를 통해, 업로드를 누르면 어느 endpointer로 이동할지 경로 설정 */}
           <a href="/product/upload">업로드</a>
@@ -71,8 +75,8 @@ function RightMenu(props) {
     return (
       <Menu mode={props.mode}>
         {/** 관리자에게 업로드를 요청하는 부분, 아직 미구현 */}
-        <Menu.Item key="requestUpload">
-          식당 업로드 요청
+        <Menu.Item key="requestRestaurant">
+          <a href="/requestRestaurant">식당 업로드 요청</a>
         </Menu.Item>
         <Menu.Item key="mypage">
           {/** 아직 구현되지 않은 부분, onClick event를 추가하여, 마이페이지로 이동하도록 코딩 필요 */}

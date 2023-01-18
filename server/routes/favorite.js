@@ -39,13 +39,12 @@ router.post('/favorited', (req, res) => {
 })
 
 
-// 기존 John Ahn 코드에서는 이 endpointer에 해당하는 함수가 중복되어있음!
 // client의 Favorite.js에서 보낸 request
 // 이미 Favorited 버튼을 누른 상황인 경우, 버튼을 누르면 즐겨찾기를 취소해야함
 router.post('/removeFromFavorite', (req, res) => {
     // Favorite DB에서 즐겨찾기를 해제 하려는 사람의 userFrom과 해당 식당을 가리키는 productId를 찾고 Favorite DB에 있는 정보를 지운다
     Favorite.findOneAndDelete({ productId: req.body.productId, userFrom: req.body.userFrom })
-        // 이를 바탕으로 쿼리문 실행, result에는 쿼리가 실행된 결과가 담겨 프론트에 res로 보냄
+        // 이를 바탕으로 쿼리문 실행, doc에는 쿼리가 실행된 결과가 담겨 프론트에 res로 보냄
         .exec((err, doc) => {
             if (err) return res.status(400).send(err)
             res.status(200).json({ success: true, doc })
