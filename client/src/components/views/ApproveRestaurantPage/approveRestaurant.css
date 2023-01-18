@@ -1,0 +1,18 @@
+/* /favorite endpointer에 들어갔을 때 화면의 보이는 UI로, FavoritePage.js의 return부분에 적용될 css */
+
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
