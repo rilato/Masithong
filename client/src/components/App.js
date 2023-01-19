@@ -83,7 +83,7 @@ function App() {
                         />
                         <Route
                             path="/requestRestaurant"
-                            element={Auth(RequestRestaurantPage, true)}
+                            element={Auth(RequestRestaurantPage, true)} 
                         />
                         <Route
                             path="/approveRestaurant"
