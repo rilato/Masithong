@@ -20,10 +20,6 @@ function LeftMenu(props) {
           {/* Home 버튼 누르면 LandingPage로 갈 수 있도록 href지정 */}
           <a href="/">Home</a>
         </Menu.Item>
-        <Menu.Item key="favorite">
-          {/* Favorite 버튼 누르면 /favorite endpointer에 해당하는 페이지로 갈 수 있도록 href지정 */}
-          <a href="/favorite">업로드 요청</a>
-        </Menu.Item>
       </Menu>
     )
   }
