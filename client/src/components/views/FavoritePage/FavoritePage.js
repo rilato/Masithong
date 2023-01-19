@@ -52,8 +52,6 @@ function FavoritePage() {
                     alert("해당 식당을 리스트에서 지우는데 실패했습니다.")
                 }
             })
-
-
     }
 
     // 즐겨찾기에 추가한 식당들을 하나 하나 보여주기 위해 map 사용
@@ -117,7 +115,6 @@ function FavoritePage() {
                 왜냐하면 얘를 감싸고있는 return <tr key={index}>의 내부에 있는 정보들을 가져가서 onClickDelete함수에서 사용해야하기 때문
                 식당의 ID를 나타내는 productId와 어느 유저인지에 해당하는 userFrom을 DB에서 찾아서 지워주기 위해, 이 둘을 인자로 전달함 */}
             <td><button onClick={() => onClickDelete(favorite.productId, favorite.userFrom)}>Remove</button></td>
-
         </tr>
     })
 

@@ -57,9 +57,43 @@
      const updateComment = (newComment) => {
        setCommentLists(CommentLists.concat(newComment))
      }
-   
+     
+     // 관리자라면 favorite창이 보이지 않도록 설정
+     if (user.userData && user.userData.isAuth && user.userData.isAdmin){
+       return (
+         <div style={{ width: '100%', padding: '3rem 4rem' }}> {/* rem은 글씨 사이즈, 루트엘리먼트의 폰트 사이즈를 기준으로 동작 */}
+           {/* px(픽셀), rem, em의 차이
+           https://dwbutter.com/entry/CSS-%EC%86%8D%EC%84%B1-%EB%8B%A8%EC%9C%84-px-rem-em-%EC%82%AC%EC%9A%A9%EC%98%88%EC%8B%9C-%EA%B3%84%EC%82%B0-%EA%B8%B0%EC%A4%80 */}
+     
+           <div style={{ display: 'flex', justifyContent: 'center' }}>
+               <h1>{Product.title}</h1>
+           </div>
+           
+           <br />
+           
+           {/* gutter에서 두 개로 화면을 분할하기 때문에 지도를 새로고침했을 때 문제가 발생하는 듯 */}
+           <Row gutter={[16, 16]} >
+               {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
+               <Col lg={12} sm={24}>
+                   {/* ProductImage.js에서 가져온 내용을 위치시키는 곳 */}
+                   <ProductImage detail={Product} />
+               </Col>
+               <Col lg={12} sm={24}>
+                   {/* ProductInfo.js에서 가져온 내용을 위치시키는 곳 */}
+                   <ProductInfo detail={Product} />
+                   {/* KakaoMap.js에서 가져온 내용을 위치시키는 곳 */}
+                   <KakaoMap productInfo={Product} />
+                   {/* Comments.js에서 props로 postId를 넘겨주기 위해, CommentLists=~~~의 코드를 작성 */}
+                   {/* refreshFunction은 결국 updateComment 함수를 실행하는 것 */}
+                   {/* 기존 코드와 달리, ProductInfo 하단에 위치시켜, 댓글 UI를 더 깔끔하게 정리 */}
+                   <Comments CommentLists={CommentLists} postId={productId} refreshFunction={updateComment} />
+               </Col>
+           </Row>
+         </div>
+       )
+     }
      // 로그인 한 유저라면 favorite창이 보이도록 설정
-     if (user.userData && user.userData.isAuth && !user.userData.isAdmin){
+     else if (user.userData && user.userData.isAuth && !user.userData.isAdmin){
        return (
          <div style={{ width: '100%', padding: '3rem 4rem' }}> {/* rem은 글씨 사이즈, 루트엘리먼트의 폰트 사이즈를 기준으로 동작 */}
            {/* px(픽셀), rem, em의 차이
@@ -100,7 +134,7 @@
          </div>
        )
      }
-     // 로그인하지 않았거나, 관리자인 경우 favorite창이 보이지 않도록 설정
+     // 로그인하지 않은 유저는 favorite창과 댓글 창이 보이지 않도록 설정
      else{
        return (
          <div style={{ width: '100%', padding: '3rem 4rem' }}> {/* rem은 글씨 사이즈, 루트엘리먼트의 폰트 사이즈를 기준으로 동작 */}
@@ -125,10 +159,6 @@
                    <ProductInfo detail={Product} />
                    {/* KakaoMap.js에서 가져온 내용을 위치시키는 곳 */}
                    <KakaoMap productInfo={Product} />
-                   {/* Comments.js에서 props로 postId를 넘겨주기 위해, CommentLists=~~~의 코드를 작성 */}
-                   {/* refreshFunction은 결국 updateComment 함수를 실행하는 것 */}
-                   {/* 기존 코드와 달리, ProductInfo 하단에 위치시켜, 댓글 UI를 더 깔끔하게 정리 */}
-                   <Comments CommentLists={CommentLists} postId={productId} refreshFunction={updateComment} />
                </Col>
            </Row>
          </div>
