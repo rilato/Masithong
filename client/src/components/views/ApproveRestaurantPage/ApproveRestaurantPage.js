@@ -126,7 +126,7 @@ function ApproveRestaurantPage() {
                         <th>대표 메뉴</th>
                         <th>소개</th>
                         <th>주소</th>
-                        <td>등록 요청 제거</td>
+                        <th>등록 요청 제거</th>
                     </tr>
                 </thead>
                 <tbody>
