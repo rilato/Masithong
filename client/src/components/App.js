@@ -23,6 +23,7 @@ import FavoritePage from "./views/FavoritePage/FavoritePage";
 import Newpassword from "./views/Newpassword/Newpassword";
 import RequestRestaurantPage from "./views/RequestRestaurantPage/RequestRestaurantPage";
 import ApproveRestaurantPage from "./views/ApproveRestaurantPage/ApproveRestaurantPage";
+import EmailConfirm from "./views/EmailConfirmPage/EmailConfirm";
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -65,7 +66,7 @@ function App() {
                         />
                         <Route
                             path="/product/upload"
-                            element={Auth(UploadProductPage, true, true)} // 첫번째 true: 로그인 되어있는가  두번째 true: 관리자인가 
+                            element={Auth(UploadProductPage, true, true)} // 첫번째 true: 로그인 되어있는가  두번째 true: 관리자인가
                         />
                         {/* product의 _id를 endpointer로 넣기 위해서는 :를 꼭 포함시켜야함!
                             그래야 product/_id형식의 endpointer로 인식 */}
@@ -83,11 +84,15 @@ function App() {
                         />
                         <Route
                             path="/requestRestaurant"
-                            element={Auth(RequestRestaurantPage, true)} 
+                            element={Auth(RequestRestaurantPage, true)}
                         />
                         <Route
                             path="/approveRestaurant"
                             element={Auth(ApproveRestaurantPage, true, true)}
+                        />
+                        <Route
+                            path="/EmailConfirm"
+                            element={Auth(EmailConfirm, null)}
                         />
                     </Routes>
                 </div>
