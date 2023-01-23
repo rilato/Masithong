@@ -38,12 +38,6 @@ function UploadProductPage(props) {
     //주소 State설정
     const [Address,SetAddress]=useState("")
 
-    //위도 State설정
-    const [Latitude,SetLatitude]=useState("")
-
-    //경도 State설정
-    const [Longitude,SetLongitude]=useState("")
-
     // 위에서 설정한 state를 실제로 입력되도록 하는 event 설정
     const titleChangeHandler = (event) => {
         setTitle(event.currentTarget.value)
@@ -69,20 +63,12 @@ function UploadProductPage(props) {
         SetAddress(event.currentTarget.value)
     }
 
-    const latitudeChangeHandler = (event) => {
-        SetLatitude(event.currentTarget.value)
-    }
-
-    const longitudeChangeHandler = (event) => {
-        SetLongitude(event.currentTarget.value)
-    } 
-
     // 가격, 메뉴 이름을 쓸 수 있도록 Handler 설정, DB 변경 필요
 
     const submitHandler = (event) => {
         event.preventDefault(); // 페이지가 자동적으로 refresh되지 않도록 설정
         // 모든 칸이 채워지지 않은 경우, 제출할 수 없도록 함
-        if (!Title || !Description || !Price || !RestaurantType || Images.length === 0 || !Latitude || !Longitude || !Address) {
+        if (!Title || !Description || !Price || !RestaurantType || Images.length === 0 || !Address) {
             return alert(" 모든 값을 넣어주셔야 합니다.")
         }
 
@@ -100,8 +86,6 @@ function UploadProductPage(props) {
             images: Images,
             restaurantTypes: RestaurantType,
             address: Address,
-            latitude: Latitude,
-            longitude: Longitude,
         }
 
         // 저장할 내용을 백엔드로 보내기 위해 post request
@@ -153,10 +137,6 @@ function UploadProductPage(props) {
                 </select>
                 <br />
                 <br />
-                <label>가격대(￦) / 1인</label>
-                    <Input type="number" onChange={priceChangeHandler} value={Price} />
-                <br />
-                <br />
                 <label>설명</label>
                 <TextArea onChange={descriptionChangeHandler} value={Description} />
                 <br />
@@ -165,26 +145,8 @@ function UploadProductPage(props) {
                 <Row gutter={[16, 16]}>
                     {/* 화면이 줄어들면 Collapse가 하나씩 따로 보이고, 화면이 커지면 Collapse가 두 개로 보이도록 함 */}
                     <Col lg={12} xs={24}>
-                        <label>대표 메뉴</label>
-                        <TextArea onChange={descriptionChangeHandler} value={Description} />
-                        <br />
-                        <br />
-                    </Col>
-                    <Col lg={12} xs={24}>
-                        <label>가격</label>
-                        <TextArea onChange={descriptionChangeHandler} value={Description} />
-                        <br />
-                        <br />
-                    </Col>
-                    <Col lg={12} xs={24}>
-                        <label>위도값</label>
-                        <TextArea onChange={latitudeChangeHandler} value={Latitude} />
-                        <br />
-                        <br />
-                    </Col>
-                    <Col lg={12} xs={24}>
-                        <label>경도값</label>
-                        <TextArea onChange={longitudeChangeHandler} value={Longitude} />
+                        <label>가격대(￦) / 1인</label>
+                        <Input type="number" onChange={priceChangeHandler} value={Price} />
                         <br />
                         <br />
                     </Col>
