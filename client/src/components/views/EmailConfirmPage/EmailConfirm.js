@@ -35,9 +35,18 @@ function EmailConfirmPage(props) {
             email: Email,
             auth: state.createdAuthCode,
         };
-        axios.post("/api/users/sendEmail", dataToSubmit).then((response) => {
-            alert("인증코드가 발송되었습니다");
-        });
+        if (
+            Email.substring(Email.length - 14, Email.length) ===
+            "g.hongik.ac.kr"
+        ) {
+            axios
+                .post("/api/users/sendEmail", dataToSubmit)
+                .then((response) => {
+                    alert("인증코드가 발송되었습니다");
+                });
+        } else {
+            alert("이메일 형식이 다릅니다!");
+        }
     };
 
     const onCheckHandler = (event) => {
