@@ -45,7 +45,9 @@ function EmailConfirmPage(props) {
                     alert("인증코드가 발송되었습니다");
                 });
         } else {
-            alert("이메일 형식이 다릅니다!");
+            alert(
+                "이메일 형식이 다릅니다! \n학생 인증을 위해 g.hongik.ac.kr 형식으로 해주세요."
+            );
         }
     };
 
