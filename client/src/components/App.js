@@ -24,6 +24,7 @@ import Newpassword from "./views/Newpassword/Newpassword";
 import RequestRestaurantPage from "./views/RequestRestaurantPage/RequestRestaurantPage";
 import ApproveRestaurantPage from "./views/ApproveRestaurantPage/ApproveRestaurantPage";
 import EmailConfirm from "./views/EmailConfirmPage/EmailConfirm";
+import UploadReviewPage from "./views/UploadReviewPage/UploadReviewPage"
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -93,6 +94,10 @@ function App() {
                         <Route
                             path="/EmailConfirm"
                             element={Auth(EmailConfirm, null)}
+                        />
+                        <Route
+                            path="/product/uploadReview/:productId"
+                            element={Auth(UploadReviewPage, true)}
                         />
                     </Routes>
                 </div>

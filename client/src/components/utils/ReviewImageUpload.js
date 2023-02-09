@@ -1,4 +1,4 @@
-// 이미지 파일을 업로드하는 페이지 (관리자용)
+// 이미지 파일을 업로드하는 페이지
 
 import React, { useState } from 'react'
 import Dropzone from 'react-dropzone' // 컴퓨터 내의 이미지를 서버로 올리기 위해 필요한 라이브러리
@@ -7,8 +7,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 // 여기서 등록된 이미지를 UploadProductPage.js에서 사용할 수 있도록 하기 위해 props parameter 필요
-function FileUpload(props) {
-    // state에 백엔드 측의 product.js에 저장된 정보를 저장하기 위해 아래의 코드 사용
+function ReviewImageUpload(props) {
+    // state에 백엔드 측의 review.js에 저장된 정보를 저장하기 위해 아래의 코드 사용
     // 업로드되는 이미지는 useState의 배열 안에 저장되게 됨
     const [Images, setImages] = useState([])
 
@@ -25,7 +25,7 @@ function FileUpload(props) {
         formData.append("file", files[0])
 
         // 반드시 formData와 config를 같이 넣어줘야 함. 그래야 에러가 발생하지 않음
-        axios.post('/api/product/image', formData, config)
+        axios.post('/api/review/image', formData, config)
             // 백엔드를 통해 전달된 정보는 response 안에 들어있음
             .then(response => {
                 if (response.data.success) {
@@ -87,4 +87,4 @@ function FileUpload(props) {
     )
 }
 
-export default FileUpload
+export default ReviewImageUpload

@@ -4,6 +4,40 @@
 import React, { useState, useEffect } from 'react'
 import ImageGallery from 'react-image-gallery'; // index.css에도 css스타일 적용을 위해 import해줘야 할 것이 있음
 
+/*
+    부모 페이지인 DetailProductPage.js에서 사용할 컴포넌트 만드는 법 (   <ProductImage /> 로 사용될 것 만들기   )
+    
+    컴포넌트의 함수명은 대문자로 시작하는게 암묵적 규칙
+    함수 안에 return을 넣어줘야 함!
+
+    1. function 만들기
+    2. function 안에 return()이 존재하는데, return()안에 html 담기
+    3. <함수명> </함수명> 또는 <함수명 /> 쓰기
+
+    여기선
+    1. ProductImage라는 function을 ProductImage.js에서 만들었고
+    2. 그 ProductImage.js에서 return() 안에 html을 담았으며
+    3. <ProductImage /> 로 사용했음
+
+
+
+    컴포넌트 함수를 만드는 방법
+    
+    1. function Modal(){
+        return(
+            <div>
+            </div>
+        )
+    }
+
+    2. const Modal = () => {
+        return(
+            <div>
+            </div>
+        )
+    }
+*/
+
 function ProductImage(props) {
 
     const [Images, setImages] = useState([])
