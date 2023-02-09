@@ -33,10 +33,12 @@ app.use('/api/product', require('./routes/product')); // 상품 관련 스키마
 app.use('/api/comment', require('./routes/comment')); // 댓글을 관리
 app.use('/api/favorite', require('./routes/favorite')); // 식당 즐겨찾기를 관리
 app.use('/api/requestRestaurant', require('./routes/requestRestaurant')); // 등록 요청된 식당들을 관리
+app.use('/api/review', require('./routes/review')); // 식당들의 리뷰를 관리
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
 app.use('/uploads', express.static('uploads')); // 상품 등록시 uploads에 저장하기 위한 코드
+app.use('/uploadsReview', express.static('uploadsReview')); // 상품 등록시 uploadsReview에 저장하기 위한 코드
 
 
 const mongoose = require('mongoose') // mongoose를 통해 mongoDB와 js를 연결

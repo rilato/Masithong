@@ -1,7 +1,7 @@
 // 상품을 등록하는 페이지. 상품 정보가 모두 입력되면 백엔드로 보내주는 역할.
 
 import React, { useState } from 'react'
-import { Typography, Button, Form, Input, Col, Row } from 'antd';
+import { Button, Form, Input, Col, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import FileUpload from '../../utils/FileUpload';
 import Axios from 'axios';
