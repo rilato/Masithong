@@ -26,6 +26,7 @@ const RestaurantTypes = [
 function UploadReviewPage(props) {
     const navigate = useNavigate();
     const { productId } = useParams();
+    const variable = { productId: productId }
 
     // 사용자가 값을 입력할 수 있도록 하는 State를 설정
     // Title은 return할 때 value에 사용되고, setTitle은 onChange함수를 구현하는데 사용
@@ -111,7 +112,7 @@ function UploadReviewPage(props) {
                 } else {
                   console.log(error);
                 }
-            });    
+            });
     }
 
     return (
@@ -192,6 +193,6 @@ const Stars = styled.div`
   }
 
   .yellowStar {
-    color: #fcc419;
+    color: #fadb14;
   }
 `;

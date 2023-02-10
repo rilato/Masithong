@@ -8,7 +8,9 @@ import kakaoMap from './KakaoMap';
 function ProductInfo(props) {
     return (
         <div>
-            <Descriptions layout='horizontal' title="식당 정보">
+            <br />
+            <br />
+            <Descriptions layout='horizontal'>
                 <Descriptions.Item label="1인당 예상 가격">{props.detail.price}</Descriptions.Item>
                 {/* 여기에 Sold, View 대신, 식당에 대한 다른 정보들 추가할 수 있음 (예를 들면, 음식의 분류라든지.., 별점이라든지.. 그렇게 하려면 DB에 별점을 저장해야..)
                 별점의 평균을 매길 수 있는 쿼리문도 필요할듯*/}
@@ -26,8 +28,6 @@ function ProductInfo(props) {
                 
             </Descriptions>
             
-            <br />
-            <br />
             <br />
         </div>
     )
