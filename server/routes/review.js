@@ -117,30 +117,37 @@ router.post('/reviews', (req, res) => {
 })
 
 
-// DetailProductPage에서 get request를 요청하면, 여기서 처리. id=123123123,324234234,324234234  type=array
-router.get('/products_by_id', (req, res) => {
-    // post request를 이용해서 필요한 값을 프론트엔드에서 가져올 때엔 req.body.~을 사용하지만, get request에서는 req.query.~를 사용!!
-    let type = req.query.type
-    let productIds = req.query.id
-
-    if (type === "array") {
-        //id=123123123,324234234,324234234 이거를 
-        //productIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔준다
-        let ids = req.query.id.split(',')
-        productIds = ids.map(item => {
-            return item
-        })
-    }
+// DetailProductPage에서 post request를 요청하면, 여기서 식당 이름에 관련된 모든 리뷰를 찾아 다시 보내줌. 
+router.post('/reviews_by_id', (req, res) => {
+    
 
     //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
-    Review.find({ _id: { $in: productIds } })
+    Review.find({"restaurantId" : req.body.productId })
         .populate('writer') // writer의 모든 정보를 가져와서 읽는다
         // 쿼리를 실행한다
-        .exec((err, product) => {
+        .exec((err, reviews) => {
             if (err) return res.status(400).send(err)
-            return res.status(200).send(product)
+            return res.status(200).json({success: true, reviews})
         })
 })
+
+
+// DetailReviewPage에서 post request를 요청하면, 여기서 특정 리뷰 id에 맞는 리뷰를 찾아 다시 보내줌. 
+router.post('/review_by_reviewId', (req, res) => {
+    
+
+    //_id를 이용해서 DB에서 _id와 같은 상품의 정보를 가져온다.
+    Review.find({"_id" : req.body.reviewId })
+        .populate('writer') // writer의 모든 정보를 가져와서 읽는다
+        // 쿼리를 실행한다
+        .exec((err, review) => {
+            if (err) return res.status(400).send(err)
+            return res.status(200).json({success: true, review})
+        })
+})
+
+
+
 
 // routes폴더 안의 파일로, 라우터 기능을 하므로, exports router
 module.exports = router;

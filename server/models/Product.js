@@ -25,18 +25,9 @@ const productSchema = mongoose.Schema({
         type: Array,
         default: []
     },
-    sold: {
-        type: Number,
-        maxlength: 100,
-        default: 0
-    },
     restaurantTypes: {
         type: Number,
         default: 1
-    },
-    views: {
-        type: Number,
-        default: 0
     },
     address: {
         type: String,

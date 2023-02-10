@@ -25,7 +25,7 @@ import RequestRestaurantPage from "./views/RequestRestaurantPage/RequestRestaura
 import ApproveRestaurantPage from "./views/ApproveRestaurantPage/ApproveRestaurantPage";
 import EmailConfirm from "./views/EmailConfirmPage/EmailConfirm";
 import UploadReviewPage from "./views/UploadReviewPage/UploadReviewPage"
-
+import DetailReviewPage from "./views/DetailReviewPage/DetailReviewPage";
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -74,6 +74,12 @@ function App() {
                         <Route
                             path="/product/:productId"
                             element={Auth(DetailProductPage, null)}
+                        />
+
+                        {/*리뷰 상세보기를 위한 라우트*/}
+                        <Route
+                            path="/review/:reviewId"
+                            element={Auth(DetailReviewPage, true)} //로그인 된 회원만 볼 수 있도록 리뷰 상세보기 페이지 설정
                         />
                         <Route
                             path="/favorite"
