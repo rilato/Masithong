@@ -155,7 +155,40 @@ const updateSearchTerm = (newSearchTerm) => {
     getProducts(body) // body 값에 맞게 백엔드에서 가져오기
 }
 
+// return 아래 쪽이 html을 짜는 공간
+/* 주의사항은 return안에는 하나의 태그로 시작해서 하나의 태그로 끝나야 함.
+ex) <div>로 시작하면 </div>로 끝나야 함.
+즉
+<div>
 
+</div>
+<div>
+
+</div>
+처럼 병렬로 태그를 2개 이상 기입하면 안됨!!
+
+
+태그를 병렬로 사용하고 싶다 -> 하나의 div안에 넣는다!
+<div>
+    <div>
+
+    </div>
+    <div>
+
+    </div>
+</div>
+
+또는
+
+<>
+    <div>
+
+    </div>
+    <div>
+
+    </div>
+</>
+*/ 
 // css 적용 등..
 return (
     <div style={{ width: '75%', margin: '3rem auto' }}>
