@@ -29,8 +29,6 @@ function RequestRestaurantPage(props) {
     const [RestaurantTitle, setRestaurantTitle] = useState("")
     /** 식당에 대한 설명 State 세팅 */
     const [RestaurantDescription, setRestaurantDescription] = useState("")
-    /** 식당에 대한 대표 메뉴 State 세팅 */
-    const [RestaurantMenu, setRestaurantMenu] = useState("")
     /** 식당의 타입은 key값이 1인 한식이 디폴트 값 */
     const [RestaurantType, setRestaurantType] = useState(1)
     /** 식당 주소 State 설정 */
@@ -51,10 +49,6 @@ function RequestRestaurantPage(props) {
         setRestaurantDescription(event.currentTarget.value)
     }
 
-    const menuChangeHandler = (event) => {
-        setRestaurantMenu(event.currentTarget.value)
-    }
-
     const typeChangeHandler = (event) => {
         setRestaurantType(event.currentTarget.value)
     }
@@ -72,7 +66,7 @@ function RequestRestaurantPage(props) {
     const submitHandler = (event) => {
         event.preventDefault(); // 페이지가 자동적으로 refresh되지 않도록 설정
         // 모든 칸이 채워지지 않은 경우, 제출할 수 없도록 함
-        if (!RestaurantTitle || !RestaurantDescription || !RestaurantMenu || !RestaurantType || !RestaurantAddress/* || Images.length === 0*/) {
+        if (!RestaurantTitle || !RestaurantDescription || !RestaurantType || !RestaurantAddress/* || Images.length === 0*/) {
             return alert(" 모든 값을 넣어주셔야 합니다.")
         }
 
@@ -86,7 +80,6 @@ function RequestRestaurantPage(props) {
             userFrom: props.user.userData._id,
             restaurantTitle: RestaurantTitle,
             restaurantTypes: RestaurantType,
-            restaurantMenu: RestaurantMenu,
             restaurantDescription: RestaurantDescription,
             //images: Images,
             restaurantAddress: RestaurantAddress,
@@ -139,10 +132,6 @@ function RequestRestaurantPage(props) {
                         <option key={item.key} value={item.key}> {item.value}</option>
                     ))}
                 </select>
-                <br />
-                <br />
-                <label>추천 메뉴</label>
-                    <TextArea onChange={menuChangeHandler} value={RestaurantMenu} />
                 <br />
                 <br />
                 <label>식당 소개</label>
