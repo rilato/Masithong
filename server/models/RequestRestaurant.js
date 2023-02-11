@@ -21,10 +21,6 @@ const requestRestaurantSchema = mongoose.Schema({
     restaurantDescription: {
         type: String
     },
-    // 추천 메뉴
-    restaurantMenu: {
-        type: String
-    },
     // 식당 분류
     restaurantTypes: {
         type: Number

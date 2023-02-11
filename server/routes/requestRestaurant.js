@@ -26,7 +26,7 @@ router.post('/getRequestedRestaurant', (req, res) => {
         })
 })
 
-// client의 ApproveRestaurantPage.js에서 보낸 request
+// client의 ApproveRestaurantPage.js에서 보낸 request 또는 UploadRequestedProductPage.js에서 보낸 request
 // 식당 등록을 완료한 경우, 버튼을 누르면 식당 요청을 없애야함
 router.post('/removeRestaurant', (req, res) => {
     // RequestRestaurant DB에서 즐겨찾기를 해제 하려는 사람의 userFrom과 해당 식당을 가리키는 restaurantId를 찾고 RequestRestaurant DB에 있는 정보를 지운다
@@ -35,6 +35,42 @@ router.post('/removeRestaurant', (req, res) => {
         .exec((err, doc) => {
             if (err) return res.status(400).send(err)
             res.status(200).json({ success: true, doc })
+        })
+})
+
+// client의 UploadProductPage.js파일과 관련
+router.post('/restaurant_by_id', (req, res) => {
+    //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
+    RequestRestaurant.find({ "_id" : req.body.approveRestaurantId })
+    .populate('userFrom') // writer의 모든 정보를 가져와서 읽는다
+    // 쿼리를 실행한다
+    .exec((err, restaurant) => {
+        if (err) return res.status(400).send(err)
+        return res.status(200).json({success: true, restaurant})
+    })
+})
+
+router.get('/restaurant_by_id', (req, res) => {
+    // post request를 이용해서 필요한 값을 프론트엔드에서 가져올 때엔 req.body.~을 사용하지만, get request에서는 req.query.~를 사용!!
+    let type = req.query.type
+    let restaurantIds = req.query.id
+
+    if (type === "array") {
+        //id=123123123,324234234,324234234 이거를 
+        //restaurantIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔준다
+        let ids = req.query.id.split(',')
+        restaurantIds = ids.map(item => {
+            return item
+        })
+    }
+
+    //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
+    RequestRestaurant.find({ _id: { $in: restaurantIds } })
+        .populate('userFrom') // writer의 모든 정보를 가져와서 읽는다
+        // 쿼리를 실행한다
+        .exec((err, restaurant) => {
+            if (err) return res.status(400).send(err)
+            return res.status(200).send(restaurant)
         })
 })
 

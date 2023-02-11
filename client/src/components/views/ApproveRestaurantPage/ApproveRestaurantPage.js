@@ -1,10 +1,13 @@
 // 로그인한 유저가 식당 업로드를 요청하면 그것을 확인하는 페이지
 
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { Button, Space } from 'antd';
 import './approveRestaurant.css';
 import Axios from 'axios';
 
 function ApproveRestaurantPage() {
+    const navigate = useNavigate();
     /** ApproveRestaurant에는 사용자가 등록을 요청한 모든 식당들의 정보가 들어있음 */
     const [ApproveRestaurant, setApproveRestaurant] = useState([])
 
@@ -31,7 +34,6 @@ function ApproveRestaurantPage() {
             })
     }
 
-
     // 즐겨찾기 페이지에서 remove 버튼을 누를 때, 해당 식당을 없애기 위한 함수
     const onClickDelete = (restaurantId, userFrom) => {
 
@@ -53,7 +55,6 @@ function ApproveRestaurantPage() {
 
     // 즐겨찾기에 추가한 식당들을 하나 하나 보여주기 위해 map 사용
     const renderCards = ApproveRestaurant.map((restaurant, index) => {
-
         // RestaurantType 부분
         let RestaurantType;
         
@@ -82,15 +83,13 @@ function ApproveRestaurantPage() {
                 break;
             }
 
+            
         return <tr key={index}>
             {/* 실제로 사용자가 식당 업로드를 요청했을 때 저장된 데이터가 관리자에게 보여지는 부분 */}
-            <td>{restaurant.restaurantTitle}</td>
+            <td><a href={`/upload/${restaurant._id}`}>{restaurant.restaurantTitle}</a></td>
 
             {/* 식당의 types을 알려줌, switch case를 통해 숫자가 아닌 음식의 종류가 나오게 설정 */}
             <td>{RestaurantType}</td>
-            
-            {/* 식당에 대표메뉴 */}
-            <td>{restaurant.restaurantMenu}</td>
 
             {/* 식당에 대한 소개 */}
             <td>{restaurant.restaurantDescription}</td>
@@ -104,7 +103,7 @@ function ApproveRestaurantPage() {
 
                 왜냐하면 얘를 감싸고있는 return <tr key={index}>의 내부에 있는 정보들을 가져가서 onClickDelete함수에서 사용해야하기 때문
                 식당의 ID를 나타내는 productId와 어느 유저인지에 해당하는 userFrom을 DB에서 찾아서 지워주기 위해, 이 둘을 인자로 전달함 */}
-            <td><button onClick={() => onClickDelete(restaurant.restaurantId, restaurant.userFrom)}>Remove</button></td>
+            <td><Button style={{ borderRadius: '50px' }} type="primary" onClick={() => onClickDelete(restaurant.restaurantId, restaurant.userFrom)}>Remove</Button></td>
 
         </tr>
     })
@@ -123,7 +122,6 @@ function ApproveRestaurantPage() {
                     <tr>
                         <th>이름</th>
                         <th>분류</th>
-                        <th>대표 메뉴</th>
                         <th>소개</th>
                         <th>주소</th>
                         <th>등록 요청 제거</th>

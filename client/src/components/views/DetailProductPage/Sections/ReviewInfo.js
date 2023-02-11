@@ -35,7 +35,6 @@ function ReviewInfo(props) {
                     <Descriptions.Item label="평점" labelStyle={{ marginTop: '18px' }}><Rate style={{ marginTop: '12px' }} disabled defaultValue={Review.grade} />{`\(${Review.grade}점\)`}                    
                     </Descriptions.Item>
                     <Descriptions.Item label="리뷰내용" labelStyle={{marginTop: '8px'}} contentStyle={{marginTop:'8px', overflow:'hidden',width:'100px',height:'45px'}} >{Review.review}</Descriptions.Item>
-                
                 </Descriptions>
                 <br></br>
         </Row>

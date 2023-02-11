@@ -35,7 +35,7 @@ function DetailProductPage(props) {
 
   const [Product, setProduct] = useState([]) // 상품 설정
   const [CommentLists, setCommentLists] = useState([]) // 댓글 설정
-  const [ReviewLists, setReviewLists]=useState([]) //리뷰 설정
+  const [ReviewLists, setReviewLists] = useState([]) //리뷰 설정
 
   // useEffect 라는 Hook 을 사용하면 컴포넌트가 마운트 됐을 때 (처음 나타났을 때), 언마운트 됐을 때 (사라질 때), 그리고 업데이트 될 때 (특정 props가 바뀔 때)
   // 특정 작업을 처리하는 역할
@@ -59,7 +59,7 @@ function DetailProductPage(props) {
           }
         })
 
-  axios.post('/api/review/reviews_by_id',variable) 
+    axios.post('/api/review/reviews_by_id',variable) 
         .then(response => {
           if (response.data.success) {
             console.log('response.data.reviews',response.data.reviews)
@@ -151,13 +151,7 @@ function DetailProductPage(props) {
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           {/* 버튼 간의 간격 조절을 위해 margin 설정 */}
           <div style={{ marginRight: '5px' }}>
-            {/*
-            버튼을 구현하고 싶었지만, href에서 "" 안에 {productId} 부분을 인식하지 못함.. 
-            <Button href="/product/uploadReview">리뷰 작성</Button>
-            <Button onclick="location.href=`/product/${productId}/uploadReview` "> 리뷰 작성 </Button> */}
-            
             <a href={`/product/uploadReview/${productId}`}><Button>리뷰 작성</Button></a>
-            {/*<a href={`/product/uploadReview/${productId}`}> 리뷰 작성 </a>*/}
           </div>
           <div style={{ marginLeft: '5px' }}>
             {/* 맨 위의 useState에서 Product를 여기에 사용,
