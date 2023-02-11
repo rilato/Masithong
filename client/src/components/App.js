@@ -17,7 +17,7 @@ import LoginPage from "./views/LoginPage/LoginPage";
 import RegisterPage from "./views/RegisterPage/RegisterPage";
 import Auth from "../hoc/auth";
 import NavBar from "./views/NavBar/NavBar";
-import UploadProductPage from "./views/UploadProductPage/UploadProductPage.js";
+import UploadProductPage from "./views/UploadProductPage/UploadProductPage";
 import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
 import FavoritePage from "./views/FavoritePage/FavoritePage";
 import Newpassword from "./views/Newpassword/Newpassword";
@@ -26,6 +26,7 @@ import ApproveRestaurantPage from "./views/ApproveRestaurantPage/ApproveRestaura
 import EmailConfirm from "./views/EmailConfirmPage/EmailConfirm";
 import UploadReviewPage from "./views/UploadReviewPage/UploadReviewPage"
 import DetailReviewPage from "./views/DetailReviewPage/DetailReviewPage";
+import UploadRequestedProductPage from "./views/UploadRequestedProductPage/UploadRequestedProductPage";
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -68,6 +69,10 @@ function App() {
                         <Route
                             path="/product/upload"
                             element={Auth(UploadProductPage, true, true)} // 첫번째 true: 로그인 되어있는가  두번째 true: 관리자인가
+                        />
+                        <Route
+                            path="/upload/:approveRestaurantId"
+                            element={Auth(UploadRequestedProductPage, true, true)} // 첫번째 true: 로그인 되어있는가  두번째 true: 관리자인가
                         />
                         {/* product의 _id를 endpointer로 넣기 위해서는 :를 꼭 포함시켜야함!
                             그래야 product/_id형식의 endpointer로 인식 */}

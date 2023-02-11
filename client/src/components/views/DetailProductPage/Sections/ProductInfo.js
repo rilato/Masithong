@@ -2,8 +2,6 @@
 
 import React from 'react'
 import { Button, Descriptions } from 'antd'; // 상품 상세 페이지에서 design을 위해 필요한 애들 import
-//import { useDispatch } from 'react-redux';
-import kakaoMap from './KakaoMap';
 
 function ProductInfo(props) {
     return (

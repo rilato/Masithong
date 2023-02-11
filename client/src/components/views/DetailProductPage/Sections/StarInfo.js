@@ -30,11 +30,13 @@ function StarInfo(props) {
         AverageStar = stars/cnt;
     }
     
+
+    // toFixed(1)로 소수점을 고정시키는게 먹히지 않아, 다른 방법을 사용
     const showStar = () => {
         return (
             <Descriptions layout='horizontal' title="식당 정보">
                 <Descriptions.Item label="평점" labelStyle={{ marginTop: '15px' }} contentStyle={{ marginTop: '15px' }}>
-                    {`${AverageStar}점`}
+                    {`${AverageStar.toLocaleString(undefined, {maximumFractionDigits:1})}점`}
                 </Descriptions.Item>
                 <Descriptions.Item>
                     <StarRate AverageStar={AverageStar}/>    
