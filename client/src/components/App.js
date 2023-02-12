@@ -27,6 +27,8 @@ import EmailConfirm from "./views/EmailConfirmPage/EmailConfirm";
 import UploadReviewPage from "./views/UploadReviewPage/UploadReviewPage"
 import DetailReviewPage from "./views/DetailReviewPage/DetailReviewPage";
 import UploadRequestedProductPage from "./views/UploadRequestedProductPage/UploadRequestedProductPage";
+import Footer from "./views/Footer/Footer";
+
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -112,6 +114,8 @@ function App() {
                         />
                     </Routes>
                 </div>
+                <div style={{ paddingTop: "200px" }}></div>
+                <Footer />
             </Suspense>
         </Router>
     );
