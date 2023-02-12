@@ -137,6 +137,7 @@ router.post('/review_by_reviewId', (req, res) => {
     //_id를 이용해서 DB에서 _id와 같은 상품의 정보를 가져온다.
     Review.find({ "_id" : req.body.reviewId })
         .populate('writer') // writer의 모든 정보를 가져와서 읽는다
+        .populate('restaurantId')
         // 쿼리를 실행한다
         .exec((err, review) => {
             if (err) return res.status(400).send(err)

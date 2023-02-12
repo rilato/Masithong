@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 //import { FaCode } from "react-icons/fa";
 import axios from 'axios';  // request를 보내기 위해 사용
 import { useNavigate } from 'react-router-dom';
-import {Col, Card, Row, Carousel } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
+import {Col, Card, Row, Button } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
 import Icon from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
@@ -194,7 +194,7 @@ return (
     <div style={{ width: '75%', margin: '3rem auto' }}>
 
         <div style={{ textAlign: 'center' }}>
-            <h2> 등록된 식당들 <Icon type="rocket" /> </h2>
+            <h2> 등록된 식당들 </h2>
         </div>
 
         {/* Filter */}
@@ -233,7 +233,7 @@ return (
         {PostSize >= Limit &&
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 { /* 더보기 버튼 구현, 클릭 시 loadMoreHandler 작동*/ }
-                <button onClick={loadMoreHandler}>더보기</button>
+                <Button style={{ borderRadius: '5px', background: '#f6f6f9' }} onClick={loadMoreHandler}>더보기</Button>
             </div>
         }
 

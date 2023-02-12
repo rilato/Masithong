@@ -13,6 +13,8 @@ import Meta from 'antd/lib/card/Meta';
 import { FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
 import { Rate } from 'antd';
+import Comments from './Sections/Comments';
+import DetailReviewImage from './Sections/DetailReviewImage';
 function DetailReviewPage() {
 
     const user = useSelector(state => state.user)
@@ -20,12 +22,24 @@ function DetailReviewPage() {
     //console.log(reviewId)
      const variable = { reviewId: reviewId }
     
+   
     const [DetailReview, setDetailReview] = useState([])
-    
+    const [CommentLists, setCommentLists] = useState([]) // 댓글 설정
   // 몽고DB에서 해당 id번호에 맞는 리뷰 내용 가져오기
   useEffect(() => {
     fetchDetailReview() // 리뷰 상세보기 페이지에 들어오자마자 일단 이 함수 한 번 실행, remove버튼을 누르면 이 함수 한 번 더 실행 (onClickDelete에서 구현)
                         //remove버튼 누르면 detailProduct 페이지로 이동시켜줘야함 
+
+    // DB에서 모든 Comment 정보들을 가져오기, 백엔드의 comment.js 파일과 연관
+    Axios.post('/api/comment/getComments', variable)
+        .then(response => {
+          if (response.data.success) {
+              console.log('response.data.comments',response.data.comments)
+              setCommentLists(response.data.comments)
+          } else {
+              alert('Failed to get comment Info')
+          }
+        })
     
 },[])
 
@@ -42,6 +56,8 @@ const fetchDetailReview = () => {
             console.log('response.data.review',response.data.review)
             setDetailReview(response.data.review)
             
+            
+            
           }  else {
             alert('Failed to get DetailReviewInfo')
         }
@@ -50,36 +66,67 @@ const fetchDetailReview = () => {
     
 }
 
+
 const renderCards= DetailReview.map((Review,index) =>{
+ 
   const time=Review.updatedAt;
   const realTime=time.split('T');
    console.log(realTime[0]);
-  return <Row>
-            <Card className="custom-card" bordered={false}
-                     // href를 통해 상품의 _id에 맞게 endpointer를 지정하고, 상품의 상세 페이지를 볼 수 있는 URL을 만들어 줌
-                     cover={<a href={`/review/${Review._id}`} ><ImageSlider images={Review.images} /> </a>}>
-                 
-                 </Card>
+  return (
+        
+        <Row justify="center" >
+             
          
-         
-         <Descriptions className="custom-description" layout='horizontal'>
+          
+            <Col align="middle" margin="20%" >
+         <Descriptions layout='horizontal' size="small" >
              <Descriptions.Item ><Avatar size={48} icon={<UserOutlined/>}/> 
              &nbsp;&nbsp;&nbsp;{Review.writer.name} </Descriptions.Item>
+             <Descriptions.Item label="식당 이름" labelStyle={{ marginTop: '18px' }} contentStyle={{ marginTop: '18px' }}>{Review.restaurantId.title}</Descriptions.Item>
              <Descriptions.Item label="등록 날짜" labelStyle={{ marginTop: '18px' }} contentStyle={{ marginTop: '18px' }}>{realTime[0]} </Descriptions.Item>
-             <Descriptions.Item label="평점" labelStyle={{ marginTop: '18px' }}><Rate style={{ marginTop: '12px' }} disabled defaultValue={Review.grade} />{`\(${Review.grade}점\)`}                    
+             <Descriptions.Item label="평점" labelStyle={{ marginTop: '18px' }}> <Rate style={{ marginTop: '12px' }}  disabled defaultValue={Review.grade} />{`\(${Review.grade}점\)`}                    
              </Descriptions.Item>
-             <Descriptions.Item label="리뷰내용" >{Review.review}</Descriptions.Item>
-         
+             <Descriptions.Item label="리뷰내용" labelStyle={{marginTop: '8px'}} >{Review.review}           
+             </Descriptions.Item>
          </Descriptions>
+         
+         </Col>
+         <Col align="middle">
+         <DetailReviewImage detail={Review}/>
+         </Col>
+        
+         
          <br></br>
+
+         
  </Row>     
-})
+
  
+)})
+
+
+
+
 
 return (
-  <div>
-    {renderCards}
+
+  <div style={{ width: '100%', padding: '3rem 24rem', justifyContent: 'center'}}>
+   
+         {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
+        {/*<div style={{margin:'10px 20%'}}>*/} 
+         {renderCards}
+       
+         
+       
+        
+        <br />
+        
+            
+       
   </div>
+
+  
+
   
 )
   
