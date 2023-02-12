@@ -1,0 +1,19 @@
+/*
+.image-gallery {
+    width: 50%;
+    height: auto;
+}
+
+.image-gallery-slide img {
+    width: 50%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: cover;
+    overflow: hidden;
+    object-position: center center;
+}
+
+.fullscreen .image-gallery-slide img {
+    max-height: 100vh;
+}
+*/

@@ -3,6 +3,9 @@
 
 import React, { useState, useEffect } from 'react'
 import ImageGallery from 'react-image-gallery'; // index.css에도 css스타일 적용을 위해 import해줘야 할 것이 있음
+import "react-image-gallery/styles/css/image-gallery.css";
+import styled from 'styled-components'
+import './ProductImage.css';
 
 /*
     부모 페이지인 DetailProductPage.js에서 사용할 컴포넌트 만드는 법 (   <ProductImage /> 로 사용될 것 만들기   )
@@ -62,9 +65,12 @@ function ProductImage(props) {
 
     return (
         <div>
-            <ImageGallery items={Images} /> {/* ImageGallery 라이브러리를 사용하는데, 위에서 세팅된 Image를 item으로 넣는 것*/}
+            <ImageGallery items={Images} ></ImageGallery>  {/* ImageGallery 라이브러리를 사용하는데, 위에서 세팅된 Image를 item으로 넣는 것*/}
         </div>
     )
 }
 
+
 export default ProductImage
+
+

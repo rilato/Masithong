@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import LeftMenu from './Sections/LeftMenu';
 import RightMenu from './Sections/RightMenu';
 import { Drawer, Button } from 'antd';
-import Icon from '@ant-design/icons';
+import Icon, { SmileOutlined } from '@ant-design/icons';
 import './Sections/Navbar.css';
 
 function NavBar() {
@@ -29,7 +29,7 @@ function NavBar() {
     // menu__logo, menu__container 등은 Sections/Navbar.css에서 정의해 놓았음
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
       <div className="menu__logo">
-        <a href="/">맛있홍</a>
+        <a href="/">맛있홍 <SmileOutlined/></a>
       </div>
       <div className="menu__container">
         <div className="menu_left">
