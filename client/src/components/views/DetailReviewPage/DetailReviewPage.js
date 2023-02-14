@@ -72,11 +72,12 @@ const renderCards= DetailReview.map((Review,index) =>{
    console.log(realTime[0]);
   return (
         
+    
         <Row justify="center" >
              
          
           
-            <Col align="middle" margin="20%" >
+            <Col align="middle" margin="20%" style={{ marginBottom: '30px' }}  >
          <Descriptions layout='horizontal' size="small" >
              <Descriptions.Item ><Avatar size={48} icon={<UserOutlined/>}/> 
              &nbsp;&nbsp;&nbsp;{Review.writer.name} </Descriptions.Item>
@@ -89,18 +90,23 @@ const renderCards= DetailReview.map((Review,index) =>{
          </Descriptions>
          
          </Col>
-         <Col><hr></hr></Col>
          
-          
+
+        
+         
+         
+         
          <Col align="middle">
          <DetailReviewImage detail={Review}/>
          </Col>
+         
         
          
-         <br></br>
+         
 
          
- </Row>     
+ </Row>    
+ 
 
  
 )})
