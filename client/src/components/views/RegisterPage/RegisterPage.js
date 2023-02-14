@@ -1,7 +1,4 @@
-// 회원가입 관련 페이지
-// 전체적인 구조는 LoginPage.js와 유사
-
-import React, { useState } from "react";
+import React, { useState} from "react";
 import moment from "moment";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -9,6 +6,10 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "../../../_actions/user_action";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button } from "antd";
+import axios from "axios";
+import Dropzone from "react-dropzone";
+import {PlusOutlined} from '@ant-design/icons';
+
 
 const formItemLayout = {
     labelCol: {
@@ -33,110 +34,122 @@ const tailFormItemLayout = {
     },
 };
 
+
+function jsonfunc() {
+    let json = JSON.parse(localStorage.getItem("cast"));
+    let txt = json.email;
+    return txt;
+}
+
+
 function Newpassword() {
     window.location.href = "../Newpassword";
 }
 
-// props는 로그인 성공 후 홈페이지로 이동하기 위해 설정
-function RegisterPage(props) {
-    /*const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  // initialState의 처음은 빈 칸이므로 ""
-  const [Email, setEmail] = useState("");
-  const [Name, setName] = useState("");
-  const [Password, setPassword] = useState("");
-  const [ConfirmPassword, setConfirmPassword] = useState("");
-
-  const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value)
-  }
-
-  const onNameHandler = (event) => {
-    setName(event.currentTarget.value)
-  }
-
-  const onPasswordHandler = (event) => {
-    setPassword(event.currentTarget.value)
-  }
-
-  const onConfirmPasswordHandler = (event) => {
-    setConfirmPassword(event.currentTarget.value)
-  }
-
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
-
-    if(Password !== ConfirmPassword){
-      return alert('비밀번호와 비밀번호 확인은 같아야 합니다.')
-    }
-
-    let body = {
-        email: Email,
-        name: Name,
-        password: Password
-    }
+function FileUpload(props) {
     
-    // redux를 쓰지 않는 경우, 원래는 다음과 같이 씀
-    // Axios.post('.api/users/register', body)
+    const [Images, setImages] = useState([])
 
-    // 액션의 이름은 registerUser
-    dispatch(registerUser(body))
-      .then(response => {
-        // 회원가입이 성공하면
-        if (response.payload.success) {
-            // 로그인 페이지로 이동
-            navigate('/login');
-        } else {
-            alert('Failed to Sign up')
+   
+    const dropHandler = (files) => {
+      
+        let formData = new FormData();
+
+        const config = {
+            header: { 'content-type': 'multipart/fomr-data' }
         }
-      }
+
+        formData.append("file", files[0])
+
+        
+        axios.post('/api/users/image', formData, config)
+           
+            .then(response => {
+                if (response.data.success) {
+                  
+                    setImages([...Images, response.data.filePath])
+                    props.refreshFunction([...Images, response.data.filePath]) 
+                } else {
+                    alert('파일을 저장하는데 실패했습니다.')
+                }
+            })
+    }
+
+    
+    const deleteHandler = (image) => {
+        const currentIndex = Images.indexOf(image);
+        let newImages = [...Images]
+       
+        newImages.splice(currentIndex, 1)
+        setImages(newImages)
+        props.refreshFunction(newImages) 
+    }
+
+
+    return (
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Dropzone onDrop={dropHandler}>
+                {({ getRootProps, getInputProps }) => (
+                    <div
+                        style={{
+                            width: 300, height: 240, border: '1px solid lightgray',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}
+                        {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <PlusOutlined style={{ fontSize: '3rem' }}/>
+                    </div>
+                )}
+            </Dropzone>
+
+            <div style={{ display: 'flex', width: '350px', height: '240px', overflowX: 'scroll' }}>
+                {Images.map((image, index) => (
+                    <div onClick={() => deleteHandler(image)} key={index}>
+                        <img style={{ minWidth: '300px', width: '300px', height: '240px' }}
+                            src={`http://localhost:5000/${image}`}
+                        />
+                    </div>
+                ))}
+
+
+            </div>
+
+
+        </div>
     )
-  }
+}
 
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'center', alignItems: 'center'
-      , width: '100%', height: '100vh'
-    }}>
-      {/* 이메일이나 비번을 타이핑을할 때, onChange를 통해 Email과 Password 값을 바꿔준다
-      <form style={{ display: 'flex', flexDirection: 'column' }} {...formItemLayout}
-          onSubmit={onSubmitHandler}
-      >
-          <label>Email</label>
-          <input type="email" value={Email} onChange={onEmailHandler} />
 
-          <label>Name</label>
-          <input type="text" value={Name} onChange={onNameHandler} />
-
-          <label>Password</label>
-          <input type="password" value={Password} onChange={onPasswordHandler} />
-
-          <label>Confirm Password</label>
-          <input type="password" value={ConfirmPassword} onChange={onConfirmPasswordHandler} />
-
-          <br />
-          <Form.Item {...tailFormItemLayout}>
-            <button type="submit">
-              회원가입
-            </button>
-          </Form.Item>
-      </form>
-    </div>
-  )*/
+// props는 로그인 성공 후 홈페이지로 이동하기 위해 설정
+function RegisterPage() {
+  
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [Images, setImages] = useState([]);
+   
+   
+    const updateImages = (Images) => {
+        setImages(Images)
+    }
 
+   
+
+    const SUPPORTED_FORMATS =["image/jpg", "image/png"];
     return (
         <Formik
             initialValues={{
+                image: null,
                 email: "",
                 lastName: "",
                 name: "",
                 password: "",
                 confirmPassword: "",
+                nickname: "",
             }}
             validationSchema={Yup.object().shape({
+                image: Yup.mixed().nullable().required("Required Field")
+                 .test("size", "File size is too big", (value) =>value && value.size <= 1024 * 1024)
+                 .test("type", "Invalid file format selection", (value) => !value || (value && SUPPORTED_FORMATS.includes(value?.type))),
                 name: Yup.string().required("Name is required"),
                 lastName: Yup.string().required("Last Name is required"),
                 email: Yup.string()
@@ -148,6 +161,8 @@ function RegisterPage(props) {
                 confirmPassword: Yup.string()
                     .oneOf([Yup.ref("password"), null], "Passwords must match")
                     .required("Confirm Password is required"),
+                nickname: Yup.string()
+                .required("Nickname is required"),
             })}
             onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
@@ -156,7 +171,8 @@ function RegisterPage(props) {
                         password: values.password,
                         name: values.name,
                         lastname: values.lastname,
-                        image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`,
+                        nickname: values.nickname,
+                        image: values.image,
                     };
 
                     dispatch(registerUser(dataToSubmit)).then((response) => {
@@ -191,7 +207,10 @@ function RegisterPage(props) {
                             {...formItemLayout}
                             onSubmit={handleSubmit}
                         >
-                            <Form.Item required label="Name">
+                            <Form.Item required label = "Image">
+                               <FileUpload refreshFunction={updateImages} />
+                            </Form.Item>
+                            <Form.Item required label = "Name">
                                 <Input
                                     id="name"
                                     placeholder="Enter your name"
@@ -238,7 +257,6 @@ function RegisterPage(props) {
                                     </div>
                                 )}
                             </Form.Item>
-
                             <Form.Item
                                 required
                                 label="Email"
@@ -253,7 +271,7 @@ function RegisterPage(props) {
                                     id="email"
                                     placeholder="Enter your Email"
                                     type="email"
-                                    value={values.email}
+                                    value={jsonfunc()}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={
@@ -330,6 +348,20 @@ function RegisterPage(props) {
                                         </div>
                                     )}
                             </Form.Item>
+                            <Form.Item required label="nickname" hasFeedback>
+                              <Input id ="nickname" placeholder = "Enter your nickname"
+                                type="text" value ={values.nickname} onChange={handleChange}
+                                onBlur={handleBlur} className ={errors.nickname && touched.nickname 
+                                ? "text-input error" : "text-input"}/>
+                                {errors.nickname && touched.nickname && (
+                                    <div
+                                        className ="input-feedback"
+                                        style= {{paddingTop: "8px"}}
+                                    >
+                                        {errors.nickname}
+                                    </div>
+                                )}
+                            </Form.Item>
 
                             <Form.Item {...tailFormItemLayout}>
                                 <Button
@@ -343,12 +375,12 @@ function RegisterPage(props) {
                                     Forget password?
                                 </Button>
                             </Form.Item>
-                        </Form>
+                         </Form>
                     </div>
-                );
-            }}
-        </Formik>
-    );
-}
+                )
+        }}
+    </Formik>
+    )};
 
 export default RegisterPage;
+                    

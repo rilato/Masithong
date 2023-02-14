@@ -39,7 +39,7 @@ app.use('/api/review', require('./routes/review')); // 식당들의 리뷰를 �
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
 app.use('/uploads', express.static('uploads')); // 상품 등록시 uploads에 저장하기 위한 코드
 app.use('/uploadsReview', express.static('uploadsReview')); // 상품 등록시 uploadsReview에 저장하기 위한 코드
-
+app.use('/Users', express.static('Users'));
 
 const mongoose = require('mongoose') // mongoose를 통해 mongoDB와 js를 연결
 

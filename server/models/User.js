@@ -6,6 +6,11 @@ const moment = require("moment");   // 날짜 데이터를 사용하기 위한 �
 
 // 몽고디비에 넣을 데이터가 어떻게 생겼는지 여기서 결정
 const userSchema = mongoose.Schema({
+    images:{
+        type: Array,
+        default: []
+    },
+
     name: {
         type: String,
         maxlength: 50
@@ -23,6 +28,12 @@ const userSchema = mongoose.Schema({
         type: String,
         maxlength: 50
     },
+
+    nickname: {
+        type: String,
+        maxlength: 50
+    },
+
     // 어떤 유저가 관리자가 될 수도 있고, 일반 유저가 될 수 있으므로 role 설정
     // 1이면 관리자, 0이면 일반 유저
     role: {

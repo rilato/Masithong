@@ -7,6 +7,31 @@ const { auth } = require("../middleware/auth"); // auth는 middleware로 중간�
 //const async = require('async');
 
 const { sendEmail } = require("../mail");
+
+const multer = require('multer');
+
+var storage = multer.diskStorage({
+    destination: function(req,file,cb){
+        cb(null, 'Users/')
+    },
+    filename: function(req,file,cb)
+    {
+        cb(null, `${Date.now()}_${file.originalname}`)
+    }
+})
+
+var upload = multer({storage: storage}).single("file");
+
+router.post('/image',(req,res) => {
+    upload(req,res,err => {
+        if(err)
+        {
+            return req.json({success: false, err})
+        }
+        return res.json({success:true, filePath: res.req.file.path, fileName: res.req.file.filename})
+    })
+})
+
 router.post("/sendEmail", (req, res) => {
     sendEmail(req.body.email, req.body.auth);
     return res.status(200).json({ success: true });
@@ -96,6 +121,19 @@ router.get("/logout", auth, (req, res) => {
         }
     );
 });
+
+router.get('/users_by_id', (req,res) => {
+    let type = req.query.type
+    let UserIds = req.query.diskStorage
+    if(type == "array")
+    {
+        let ids = req.query.id.split(',')
+        UserIds = ids.map(item => {
+            return item
+        })
+    }
+})
+
 
 // router이므로, exports는 router로 한다.
 module.exports = router;
