@@ -51,9 +51,17 @@ router.get("/auth", auth, (req, res) => {
         image: req.user.image,
         cart: req.user.cart,
         history: req.user.history,
+        nickname:req.user.nickname,
     });
 });
 
+router.post('/', (req,res)=>{
+    const User = new User(req.body)
+    User.save((err)=>{
+        if(err) return res.status(400).json({success:false, err})
+        return res.status(200).json({success:true})
+    })
+})
 // endpointer가 /register인 경우 등록을 위해 post request 사용
 router.post("/register", (req, res) => {
     // 회원 가입할 때 필요한 정보들을 client에서 가져와서 데이터 베이스에 넣어준다

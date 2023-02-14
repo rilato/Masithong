@@ -9,7 +9,7 @@ import { Form, Input, Button } from "antd";
 import axios from "axios";
 import Dropzone from "react-dropzone";
 import {PlusOutlined} from '@ant-design/icons';
-
+import default_img from "../../../1676212345486_1675932258035_wow.jpg";
 
 const formItemLayout = {
     labelCol: {
@@ -106,7 +106,7 @@ function FileUpload(props) {
                 {Images.map((image, index) => (
                     <div onClick={() => deleteHandler(image)} key={index}>
                         <img style={{ minWidth: '300px', width: '300px', height: '240px' }}
-                            src={`http://localhost:5000/${image}`}
+                            src={`http://localhost:5000/${image}`} 
                         />
                     </div>
                 ))}
@@ -132,7 +132,7 @@ function RegisterPage() {
         setImages(Images)
     }
 
-   
+
 
     const SUPPORTED_FORMATS =["image/jpg", "image/png"];
     return (
@@ -147,9 +147,9 @@ function RegisterPage() {
                 nickname: "",
             }}
             validationSchema={Yup.object().shape({
-                image: Yup.mixed().nullable().required("Required Field")
+                image: Yup.mixed().nullable().required("Image is required")
                  .test("size", "File size is too big", (value) =>value && value.size <= 1024 * 1024)
-                 .test("type", "Invalid file format selection", (value) => !value || (value && SUPPORTED_FORMATS.includes(value?.type))),
+                 .test("type", "Invalid file format selection", (value) =>!value || (value && SUPPORTED_FORMATS.includes(value?.type))),
                 name: Yup.string().required("Name is required"),
                 lastName: Yup.string().required("Last Name is required"),
                 email: Yup.string()
@@ -172,7 +172,7 @@ function RegisterPage() {
                         name: values.name,
                         lastname: values.lastname,
                         nickname: values.nickname,
-                        image: values.image,
+                        image: `https://gravatar.com/avatar/${moment().unix()}?d=identicon`,
                     };
 
                     dispatch(registerUser(dataToSubmit)).then((response) => {
@@ -208,7 +208,7 @@ function RegisterPage() {
                             onSubmit={handleSubmit}
                         >
                             <Form.Item required label = "Image">
-                               <FileUpload refreshFunction={updateImages} />
+                               <FileUpload refreshFunction={updateImages}  />
                             </Form.Item>
                             <Form.Item required label = "Name">
                                 <Input
@@ -377,10 +377,11 @@ function RegisterPage() {
                             </Form.Item>
                          </Form>
                     </div>
-                )
+                );
         }}
     </Formik>
-    )};
+    );
+}
 
 export default RegisterPage;
                     
