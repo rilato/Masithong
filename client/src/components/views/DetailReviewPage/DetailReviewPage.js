@@ -6,7 +6,7 @@ import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import {Col, Card, Row, Carousel,Descriptions,Avatar,Space } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
+import {Col, Card, Row, Carousel,Descriptions,Avatar,Space,Button } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
 import Icon, { UserOutlined } from '@ant-design/icons';
 import ImageSlider from '../../utils/ImageSlider';
 import Meta from 'antd/lib/card/Meta';
@@ -43,17 +43,15 @@ function DetailReviewPage() {
     
 },[])
 
-// Remove 버튼 클릭 시 페이지를 새로고침하여 Remove된 결과가 적용되도록 하는 함수
+
 const fetchDetailReview = () => {
-    // endpointer는 백엔드의 favorite.js와 관련
-    // 누가 좋아요를 눌렀는지, 누구의 즐겨찾기 페이지를 보여줄 지를 결정해야 하므로 userFrom 설정
-    // 백 서버에 post request를 날리고
+    
 
 
     Axios.post('/api/review/review_by_reviewId',variable) 
        .then(response => {
           if (response.data.success) {
-            console.log('response.data.review',response.data.review)
+            console.log('response.data.review',response.data.review[0])
             setDetailReview(response.data.review)
             
             
@@ -74,11 +72,12 @@ const renderCards= DetailReview.map((Review,index) =>{
    console.log(realTime[0]);
   return (
         
+    
         <Row justify="center" >
              
          
           
-            <Col align="middle" margin="20%" >
+            <Col align="middle" margin="20%" style={{ marginBottom: '30px' }}  >
          <Descriptions layout='horizontal' size="small" >
              <Descriptions.Item ><Avatar size={48} icon={<UserOutlined/>}/> 
              &nbsp;&nbsp;&nbsp;{Review.writer.name} </Descriptions.Item>
@@ -91,15 +90,23 @@ const renderCards= DetailReview.map((Review,index) =>{
          </Descriptions>
          
          </Col>
+         
+
+        
+         
+         
+         
          <Col align="middle">
          <DetailReviewImage detail={Review}/>
          </Col>
+         
         
          
-         <br></br>
+         
 
          
- </Row>     
+ </Row>    
+ 
 
  
 )})
@@ -110,8 +117,20 @@ const renderCards= DetailReview.map((Review,index) =>{
 
 return (
 
-  <div style={{ width: '100%', padding: '3rem 24rem', justifyContent: 'center'}}>
-   
+    <div style={{ width: '100%', padding: '4rem 12rem', justifyContent: 'center'}}>
+     
+     
+     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        {/* 버튼 간의 간격 조절을 위해 margin 설정 */}
+        <div style={{ marginRight: '5px', marginBottom: '10px' }}>
+          
+          
+          <a href={`/editReview/${reviewId}`}><Button>리뷰 수정</Button></a>
+          
+        </div>
+        
+     </div>
+     
          {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
         {/*<div style={{margin:'10px 20%'}}>*/} 
          {renderCards}
@@ -124,7 +143,7 @@ return (
             
        
   </div>
-
+ 
   
 
   

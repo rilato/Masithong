@@ -1,7 +1,7 @@
 // 실제적으로 별점을 그리는 페이지. 얘의 부모 페이지가 StarInfo.js
 
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 function StarRate(props) {
     const AVR_RATE = props.AverageStar * 20;
@@ -21,9 +21,10 @@ function StarRate(props) {
         return tempStarRatesArr;
     };
 
+   
     useEffect(() => {
         setRatesResArr(calcStarRates)
-    }, [calcStarRates])
+    },[props])
 
     return (
         <StarRateWrap>
