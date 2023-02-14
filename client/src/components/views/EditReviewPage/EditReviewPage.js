@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from 'react'
 import { useSelector } from "react-redux";
-import { Button, Form, Input,Row, Col } from 'antd';
+import { Button, Form, Input,Row, Col, Upload } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
+import ReviewImageUpload from '../../utils/ReviewImageUpload';
 
 const ARRAY = [0, 1, 2, 3, 4];
 
@@ -25,6 +26,8 @@ function EditReviewPage() {
     const [DetailReview, setDetailReview] = useState([])
     const [Review, setReview] = useState("")
     const [Grade, setGrade] = useState([false, false, false, false, false])
+    const [Images, setImages] = useState([])
+    
 
     useEffect(() => {
         Axios.post('/api/review/review_by_reviewId',variable) 
@@ -33,8 +36,6 @@ function EditReviewPage() {
                 console.log('response.data.review',response.data.review)
                 setDetailReview(response.data.review[0])
                
-                
-                
               }  else {
                 alert('Failed to get DetailReviewInfo')
             }
@@ -43,21 +44,32 @@ function EditReviewPage() {
         
     },[]);
 
-    useEffect(() => {
-        
+    useEffect(() => { 
+         
         setReview(DetailReview.review);
+        setImages(DetailReview.images);
+        
         for(let i=0;i<DetailReview.grade;i++)
         {
             Grade[i]=true;
         }
-       
-          
+
+ 
         
     },[DetailReview]);  
 
-    useEffect(() => {
+    useEffect(() => { 
         setStar();
     }, [Grade]);
+
+
+    useEffect(() => { 
+        setImages(Images);
+    }, [Images]);
+
+
+   
+   
 
     const setStar = () => {
         let star = Grade.filter(Boolean).length;
@@ -76,6 +88,13 @@ function EditReviewPage() {
         }
 
         setGrade(gradeStates);
+    }
+
+    const updateImages = (newImages) => {
+
+        //let prevArr=Images;
+        //let afterArr=Images.push(newImages);
+        setImages(newImages);
     }
  
    // 가격, 메뉴 이름을 쓸 수 있도록 Handler 설정, DB 변경 필요
@@ -118,6 +137,7 @@ function EditReviewPage() {
     
     console.log('리뷰',Review)
     console.log('별',Grade)
+    console.log('이미지',Images)
     const {TextArea}=Input
     return (
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
@@ -152,6 +172,14 @@ function EditReviewPage() {
                         <br />
                     
                     
+                </Row>
+                <Row>
+                <br />
+                {/* DropZone */}
+                {/* ReviewImageUpload.js의 이미지를 함께 업로드하기 위해 필요한 props */}
+                    <ReviewImageUpload refreshFunction={updateImages} />
+                <br />
+                <br />
                 </Row>
                 <Button htmlType="submit">
                     확인
