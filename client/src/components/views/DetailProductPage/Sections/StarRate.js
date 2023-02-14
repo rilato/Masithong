@@ -8,7 +8,7 @@ function StarRate(props) {
     const STAR_IDX_ARR = ['first', 'second', 'third', 'fourth', 'last'];
     const [ratesResArr, setRatesResArr] = useState([0, 0, 0, 0, 0]);
 
-    const calcStarRates = useCallback(() => {
+    const calcStarRates = () => {
         let tempStarRatesArr = [0, 0, 0, 0, 0];
         let starVerScore = (AVR_RATE * 70) / 100;
         let idx = 0;
@@ -19,11 +19,12 @@ function StarRate(props) {
         }
         tempStarRatesArr[idx] = starVerScore;
         return tempStarRatesArr;
-    }, []);
+    };
 
+   
     useEffect(() => {
         setRatesResArr(calcStarRates)
-    }, [calcStarRates])
+    },[props])
 
     return (
         <StarRateWrap>
