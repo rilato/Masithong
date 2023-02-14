@@ -146,6 +146,20 @@ router.post('/review_by_reviewId', (req, res) => {
 })
 
 
+router.post('/updateReview', (req, res) => {
+    
+    Review.findOneAndUpdate(
+        {_id: req.body._id},
+        {review: req.body.review,grade: req.body.grade},
+        
+        )
+        .then(Review=>res.json(Review))
+        .catch(err=>res.status(400).json(err));
+        
+    
+
+})
+
 
 
 // routes폴더 안의 파일로, 라우터 기능을 하므로, exports router

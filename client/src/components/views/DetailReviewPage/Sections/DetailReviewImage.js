@@ -32,17 +32,13 @@ function DetailReviewImage(props) {
         return(
         
            
-          <Col key={index}  >
+          <Col key={index}>
+            
             <Image width={250} src={image} alt={`Image ${index + 1}`} />
             
             
           </Col>)
 })
-      
-   
-                    //<Image width={200} src={image}/>
-                    
-               
                 
    
 

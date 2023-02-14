@@ -27,6 +27,7 @@ import EmailConfirm from "./views/EmailConfirmPage/EmailConfirm";
 import UploadReviewPage from "./views/UploadReviewPage/UploadReviewPage"
 import DetailReviewPage from "./views/DetailReviewPage/DetailReviewPage";
 import UploadRequestedProductPage from "./views/UploadRequestedProductPage/UploadRequestedProductPage";
+import EditReviewPage from "./views/EditReviewPage/EditReviewPage";
 import Footer from "./views/Footer/Footer";
 
 //null   Anyone Can go inside
@@ -88,6 +89,12 @@ function App() {
                             path="/review/:reviewId"
                             element={Auth(DetailReviewPage, true)} //로그인 된 회원만 볼 수 있도록 리뷰 상세보기 페이지 설정
                         />
+
+                        <Route
+                            path="/editReview/:reviewId"
+                            element={Auth(EditReviewPage, true)} //로그인 된 회원만 볼 수 있도록 리뷰 상세보기 페이지 설정
+                        />
+
                         <Route
                             path="/favorite"
                             element={Auth(FavoritePage, true)}
