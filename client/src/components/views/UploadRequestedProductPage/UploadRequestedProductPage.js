@@ -60,7 +60,7 @@ function UploadRequestedProductPage(props) {
     const [Restaurant, setRestaurant] = useState([])
     // 사용자가 값을 입력할 수 있도록 하는 State를 설정
     // Title은 return할 때 value에 사용되고, setTitle은 onChange함수를 구현하는데 사용
-    const [Title, setTitle] = useState(Restaurant.restaurantTitle)
+    const [Title, setTitle] = useState("")
     const [Description, setDescription] = useState("")
     // 괄호 안에 들어가는 숫자는 디폴트 값. 가격에 대해서는 0으로 적혀있음
     const [Price, setPrice] = useState(0)
