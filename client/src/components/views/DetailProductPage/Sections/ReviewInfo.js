@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Row, Descriptions, Avatar } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, LikeOutlined, DislikeOutlined } from '@ant-design/icons';
 import ImageSlider from '../../../utils/ImageSlider';
 import styled from 'styled-components';
-import { Rate } from 'antd';
+import { Rate, Tooltip } from 'antd';
+import LikeInfo from './LikeInfo';
 
 function ReviewInfo(props) {
     const [Reviews, setReview] = useState([])
-    
+
     useEffect(()=>{
         setReview(props.ReviewLists)
-    }, [props.ReviewLists]) 
-    
-
+    }, [props.ReviewLists])
     
     
     const renderCards = Reviews.map((Review,index) => {
         let time=Review.updatedAt;
         let realTime=time.split('T');
+
+        const variable = { reviewId : Review._id }
         
         return (
           <div style={{ margin: '1rem auto'}}>
@@ -32,9 +33,10 @@ function ReviewInfo(props) {
                     <Descriptions.Item ><Avatar size={48} icon={<UserOutlined/>}/> 
                     &nbsp;&nbsp;&nbsp;{Review.writer.name} </Descriptions.Item>
                     <Descriptions.Item label="등록 날짜" labelStyle={{ marginTop: '18px' }} contentStyle={{ marginTop: '18px' }}>{realTime[0]} </Descriptions.Item>
-                    <Descriptions.Item label="평점" labelStyle={{ marginTop: '18px' }}><Rate style={{ marginTop: '12px' }} disabled defaultValue={Review.grade} />{`\(${Review.grade}점\)`}                    
+                    <Descriptions.Item label="평점" labelStyle={{ marginTop: '18px' }}><Rate style={{ marginTop: '12px' }} disabled defaultValue={Review.grade} />{` \(${Review.grade}점\)`}                    
                     </Descriptions.Item>
-                    <Descriptions.Item label="리뷰내용" labelStyle={{marginTop: '8px'}} contentStyle={{marginTop:'8px', overflow:'hidden',width:'100px',height:'45px'}} >{Review.review}</Descriptions.Item>
+                    <Descriptions.Item contentStyle={{ marginTop: '18px' }}><LikeInfo Review={Review} /></Descriptions.Item>
+                    <Descriptions.Item label="리뷰내용" labelStyle={{marginTop: '8px'}} contentStyle={{marginTop:'8px', overflow:'hidden',width:'100px',height:'45px'}} ><a href={`/review/${Review._id}`}>{Review.review}</a></Descriptions.Item>
                 </Descriptions>
                 <br></br>
         </Row>

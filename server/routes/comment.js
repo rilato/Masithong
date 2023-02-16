@@ -29,7 +29,7 @@ router.post("/saveComment", (req, res) => {
 // 프론트 쪽의 DetailProductPage.js에서 axios.post('/api/comment/getComments', variable)에 맞추기 위해 /getComments
 router.post("/getComments", (req, res) => {
 
-    Comment.find({ "postId": req.body.productId }) // models/Comment.js에서 productId를 받아오고, 그거에 맞는 애를 DB에서 찾기
+    Comment.find({ "postId": req.body.reviewId }) // DetailReviewPage.js에서 reviewId를 받아오고, 그거에 맞는 애를 DB에서 찾기
         .populate('writer')
         .exec((err, comments) => {
             if (err) return res.status(400).send(err)

@@ -73,23 +73,21 @@ router.post('/reviews', (req, res) => {
 })
 
 
-// DetailProductPage에서 post request를 요청하면, 여기서 식당 이름에 관련된 모든 리뷰를 찾아 다시 보내줌. 
+// EditReviewPage.js에서 get request를 요청하면, 여기서 식당 ID에 관련된 모든 리뷰를 찾아 다시 보내줌. 
 router.post('/reviews_by_id', (req, res) => {
-    //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
-    Review.find({"restaurantId" : req.body.productId })
+    //_id를 이용해서 DB에서 _id와 같은 상품의 정보를 가져온다.
+    Review.find({ "_id" : req.body.reviewId })
         .populate('writer') // writer의 모든 정보를 가져와서 읽는다
         // 쿼리를 실행한다
-        .exec((err, reviews) => {
+        .exec((err, review) => {
             if (err) return res.status(400).send(err)
-            return res.status(200).json({success: true, reviews})
+            return res.status(200).json({success: true, review})
         })
 })
 
 
-// DetailReviewPage에서 post request를 요청하면, 여기서 특정 리뷰 id에 맞는 리뷰를 찾아 다시 보내줌. 
+// EditReviewPage.js에서 post request를 요청하면, 여기서 특정 리뷰 id에 맞는 리뷰를 찾아 다시 보내줌. 
 router.post('/review_by_reviewId', (req, res) => {
-    
-
     //_id를 이용해서 DB에서 _id와 같은 상품의 정보를 가져온다.
     Review.find({ "_id" : req.body.reviewId })
         .populate('writer') // writer의 모든 정보를 가져와서 읽는다
