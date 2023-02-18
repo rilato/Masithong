@@ -103,23 +103,6 @@ function EditReviewPage() {
     console.log("productId : ", productId);
 
 
-    /* 
-    useEffect는 조건문 달면 안됨
-
-    const productId = DetailReview.restaurantId;
-
-    if (productId != undefined) {
-        useEffect(() => {
-            console.log("productId._id : ", productId._id);
-            // 위에거의 post request에서 백엔드 측에서 populate로 restaurantId를 넣었다. (restaurantId는 Product 스키마를 참조하므로, Product의 모든 내용을 가져온다.)
-            Axios.get('/api/product/getProduct', productId._id)
-            .then(response => {
-                setProduct(response.data[0])
-                console.log("response.data for PRODUCT : ", response.data)
-            })
-            .catch(err => alert(err))
-        },[]);
-    } */
 
     useEffect(() => { 
         setReview(DetailReview.review);
@@ -140,16 +123,7 @@ function EditReviewPage() {
     }, [Images]);
 
 
-   
-//     Axios.post('/api/product/product_by_id', productId)
-//     .then(response => {
-//         setProduct(response.data.product[0])
-//         console.log("productId in useEffect : ", productId)
-//         console.log("response.data.product[0] : ", response.data.product[0])
-//     })
-//     .catch(err => alert(err))
 
-// console.log("Product : ", Product)
    
 
     const setStar = () => {
@@ -195,6 +169,7 @@ function EditReviewPage() {
             _id: reviewId,
             review: Review,
             grade: Grade.filter(Boolean).length,
+            images: Images,
         }
 
         // 저장할 내용을 백엔드로 보내기 위해 post request
@@ -243,6 +218,9 @@ function EditReviewPage() {
             });
     }
 
+    console.log('리뷰',Review)
+    console.log('별',Grade)
+    console.log('이미지',Images)
     const {TextArea}=Input
 
     return (
@@ -283,7 +261,7 @@ function EditReviewPage() {
                 <br />
                 {/* DropZone */}
                 {/* ReviewImageUpload.js의 이미지를 함께 업로드하기 위해 필요한 props */}
-                    <ReviewImageUpload refreshFunction={updateImages} />
+                    <ReviewImageUpload detail={Images} refreshFunction={updateImages} />
                 <br />
                 <br />
                 </Row>

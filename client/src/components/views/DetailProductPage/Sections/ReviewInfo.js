@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Row, Descriptions, Avatar } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
-import { UserOutlined, LikeOutlined, DislikeOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import ImageSlider from '../../../utils/ImageSlider';
 import styled from 'styled-components';
-import { Rate, Tooltip } from 'antd';
+import { Rate } from 'antd';
 import LikeInfo from './LikeInfo';
 
 function ReviewInfo(props) {

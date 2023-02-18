@@ -104,7 +104,7 @@ router.post('/updateReview', (req, res) => {
     
     Review.findOneAndUpdate(
         {_id: req.body._id},
-        {review: req.body.review, grade: req.body.grade},
+        {review: req.body.review, grade: req.body.grade, images:req.body.images},
         
         )
         .then(Review=>res.json(Review))

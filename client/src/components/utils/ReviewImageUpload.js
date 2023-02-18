@@ -1,6 +1,6 @@
 // 이미지 파일을 업로드하는 페이지
 
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Dropzone from 'react-dropzone' // 컴퓨터 내의 이미지를 서버로 올리기 위해 필요한 라이브러리
 //import Icon from '@ant-design/icons';
 import { PlusOutlined } from '@ant-design/icons';
@@ -11,6 +11,22 @@ function ReviewImageUpload(props) {
     // state에 백엔드 측의 review.js에 저장된 정보를 저장하기 위해 아래의 코드 사용
     // 업로드되는 이미지는 useState의 배열 안에 저장되게 됨
     const [Images, setImages] = useState([])
+
+    useEffect(() => {
+        // 이미지가 존재하고, 이미지의 개수가 한 개 이상이면 images를 정의
+        if (props.detail && props.detail.length > 0) {
+            let images = []
+
+            // 하나 하나 컨트롤하기 위해 map
+            props.detail.map(item => {
+                images.push(item);
+                     
+            
+            })
+            setImages(images)
+        }
+
+    }, [props.detail])
 
     // 아래의 return부분에서 onDrop이 될 때, dropHandler라는 함수가 실행되도록 하기위해 구현한 함수
     // files라는 파라미터를 백엔드로 전송하도록 함
