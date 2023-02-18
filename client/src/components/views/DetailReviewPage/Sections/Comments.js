@@ -12,10 +12,15 @@ const { TextArea } = Input;
 function Comments(props) {
     const user = useSelector(state => state.user) // redux를 통해 로그인된 유저의 정보를 가져오기 위해 사용
     const [Comment, setComment] = useState("")
+    const [OpenComments, setOpenComments] = useState(true)
 
     // 사용자가 댓글 칸에 타이핑할 수 있도록 하는 함수
     const handleChange = (e) => {
         setComment(e.currentTarget.value)
+    }
+
+    const toggle = () => {
+        setOpenComments(!OpenComments);
     }
 
     // submit버튼을 눌렀을 때 댓글이 제출되도록 하는 함수
@@ -59,7 +64,7 @@ function Comments(props) {
                     // react에서는 JSX를 HTML대신 사용하는데, div나 React.Fragment로 감싸줘야 에러가 나지 않음!
                     <React.Fragment>
                         {/* SingleComment.js와 연관이 있음 */}
-                        <SingleComment comment={comment} postId={props.postId} refreshFunction={props.refreshFunction} />
+                        <SingleComment comment={comment} postId={props.postId} refreshFunction={props.refreshFunction} OpenComments={OpenComments} toggle={toggle} />
                         {/* ReplyComment.js와 연관이 있음 */}
                         <ReplyComment CommentLists={props.CommentLists} postId={props.postId} parentCommentId={comment._id} refreshFunction={props.refreshFunction} />
                     </React.Fragment>
@@ -69,6 +74,7 @@ function Comments(props) {
 
             {/* Root Comment Form */}
 
+            {OpenComments &&
             <form style={{ display: 'flex' }} onSubmit={onSubmit}>
                 <TextArea
                     style={{ width: '100%', borderRadius: '5px' }}  // borderRadius는 테두리를 둥글게 하기 위한 코드
@@ -79,7 +85,7 @@ function Comments(props) {
                 <br />
                 <Button style={{ width: '10%', height: '70px' }} onClick={onSubmit}>댓글</Button>
             </form>
-
+            }
         </div>
     )
 }

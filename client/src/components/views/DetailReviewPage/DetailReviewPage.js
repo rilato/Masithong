@@ -18,8 +18,9 @@ import DetailReviewImage from './Sections/DetailReviewImage';
 import LikeDislikes from './Sections/LikeDislikes';
 
 function DetailReviewPage() {
-
-    const user = useSelector(state => state.user)
+  const user = useSelector(state => state.user)
+    //const user = useSelector(state => state.user)
+    //console.log('user',user);
     const { reviewId } = useParams(); 
     //console.log(reviewId)
      const variable = { reviewId: reviewId }
@@ -28,11 +29,26 @@ function DetailReviewPage() {
     const [DetailReview, setDetailReview] = useState([])
     const [CommentLists, setCommentLists] = useState([]) // 댓글 설정
     const [productId, setProductId] = useState("")
-    const [Toggle, setToggle] = useState(0)
+    
+    const [userId,setUserId]=useState("");
   // 몽고DB에서 해당 id번호에 맞는 리뷰 내용 가져오기
   useEffect(() => {
-    fetchDetailReview() // 리뷰 상세보기 페이지에 들어오자마자 일단 이 함수 한 번 실행, remove버튼을 누르면 이 함수 한 번 더 실행 (onClickDelete에서 구현)
-                        //remove버튼 누르면 detailProduct 페이지로 이동시켜줘야함 
+    
+    Axios.post('/api/review/review_by_reviewId',variable) 
+       .then(response => {
+          if (response.data.success) {
+            console.log('response.data.review',response.data.review[0])
+            setDetailReview(response.data.review)
+            setProductId(response.data.review[0].restaurantId._id)
+            setUserId(response.data.review[0].writer._id);
+           
+            
+          } else {
+            alert('Failed to get DetailReviewInfo')
+        }
+      })
+
+      
 
     // DB에서 모든 Comment 정보들을 가져오기, 백엔드의 comment.js 파일과 연관
     Axios.post('/api/comment/getComments', variable)
@@ -40,31 +56,22 @@ function DetailReviewPage() {
           if (response.data.success) {
               console.log('response.data.comments',response.data.comments)
               setCommentLists(response.data.comments)
+              
           } else {
               alert('Failed to get comment Info')
           }
         })
+
+
+     
     
 },[])
 
 
-const fetchDetailReview = () => {
-    
+
+console.log('user',userId);
 
 
-    Axios.post('/api/review/review_by_reviewId',variable) 
-       .then(response => {
-          if (response.data.success) {
-            console.log('response.data.review',response.data.review[0])
-            setDetailReview(response.data.review)
-            setProductId(response.data.review[0].restaurantId._id)
-          } else {
-            alert('Failed to get DetailReviewInfo')
-        }
-      })
-
-    
-}
 
 
 
@@ -116,8 +123,9 @@ const renderCards= DetailReview.map((Review,index) =>{
 
 
 
-
-return (
+if((user.userData && user.userData.isAuth && !user.userData.isAdmin)&&(user.userData._id===userId))
+{
+  return (
 
     <div style={{ width: '100%', padding: '4rem 12rem', justifyContent: 'center'}}>
      
@@ -152,9 +160,50 @@ return (
   
 
   
-)
+  ) }
+
+  else
+  {
+    return (
+
+      <div style={{ width: '100%', padding: '4rem 12rem', justifyContent: 'center'}}>
+       
+       
+       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+          {/* 버튼 간의 간격 조절을 위해 margin 설정 */}
+          <div style={{ marginLeft: '83%' }}>
+          <a href={`/product/${productId}`}><Button>식당 정보</Button></a>
+          </div>
+          
+       </div>
+       
+           {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
+          {/*<div style={{margin:'10px 20%'}}>*/} 
+           {renderCards}
+         
+  
+          {/* 리뷰 좋아요 싫어요 기능 */} 
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <List.Item actions={[<LikeDislikes DetailReview reviewId={reviewId} userId={localStorage.getItem('userId')}/>]}></List.Item>
+          </div>
+          
+          <br />
+  
+          <Comments CommentLists={CommentLists} postId={reviewId} refreshFunction={updateComment} />
+              
+         
+    </div>
+   
+    
+  
+    
+    ) 
+  }
+  
+}
+
   
          
-}
+
 
 export default DetailReviewPage
