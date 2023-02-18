@@ -13,6 +13,7 @@ import Checkbox from './Sections/CheckBox';
 import Radiobox from './Sections/RadioBox';
 import SearchFeature from './Sections/SearchFeature';
 import { restaurantTypes, price } from './Sections/Datas';  // Datas.js에서는 function이 아닌, 정의된 변수 두 개를 가져와서 그것들을 사용할 것이므로 하나 하나 가져오는 듯
+import StarInfo from './Sections/StarInfo';
 
 // 어떠한 값을 다른 컴포넌트(다른 파일)에게 전달해줘야 할 때, props 를 사용
 function LandingPage(props) {
@@ -31,6 +32,8 @@ function LandingPage(props) {
       price: []
   })
   const [SearchTerm, setSearchTerm] = useState("")
+  const [timeOrder, setTimeOrder] = useState(true); // state for time order
+  const [likeOrder, setLikeOrder] = useState(false); // state for like order
 
 
   useEffect(() => {
@@ -91,7 +94,8 @@ const renderCards = Products.map((product, index) => {
         >
             <Meta
                 title={product.title}
-                description={`￦${product.price}`}   // ￦는 사용자에게 표시되어야하는 문자이므로, 여기에 추가하여 기입
+                description={[<div>평점 : {product.averageStar.toFixed(1)}점</div>, <div>1인당 예상 가격 : ￦{product.price}</div>]}
+                //description={`￦${product.price}`}   // ￦는 사용자에게 표시되어야하는 문자이므로, 여기에 추가하여 기입
             />
         </Card>
     </Col>
@@ -155,6 +159,22 @@ const updateSearchTerm = (newSearchTerm) => {
     getProducts(body) // body 값에 맞게 백엔드에서 가져오기
 }
 
+
+
+
+// event handler for time order button
+const handleTimeOrder = () => {
+    setTimeOrder(true);
+    setLikeOrder(false);
+};
+
+// event handler for like order button
+const handleLikeOrder = () => {
+    setTimeOrder(false);
+    setLikeOrder(true);
+};
+
+
 // return 아래 쪽이 html을 짜는 공간
 /* 주의사항은 return안에는 하나의 태그로 시작해서 하나의 태그로 끝나야 함.
 ex) <div>로 시작하면 </div>로 끝나야 함.
@@ -212,14 +232,24 @@ return (
         </Row>
 
 
-        {/* Search */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto' }}> {/* 검색창을 우측 정렬하는 부분 */}
-            {/* SearchFeature은 SearchFeature.js에서 구현, SearchFeature에서 SearchTerm을 업데이트하기 위한 코드 */}
-            <SearchFeature
-                refreshFunction={updateSearchTerm}
-            />
-        </div>
+        <div style={{ display: 'flex', margin: '1rem auto' }}>
+            <div style={{float: 'left', width: '100%'}}>
+                <Button type={timeOrder ? "primary" : "default"} onClick={handleTimeOrder}>
+                    시간순
+                </Button>
+                <Button type={likeOrder ? "primary" : "default"} onClick={handleLikeOrder}>
+                    평점순
+                </Button>
+            </div>
 
+            {/* Search */}
+            <div style={{float: 'right'}}> {/* 검색창을 우측 정렬하는 부분 */}
+                {/* SearchFeature은 SearchFeature.js에서 구현, SearchFeature에서 SearchTerm을 업데이트하기 위한 코드 */}
+                <SearchFeature
+                    refreshFunction={updateSearchTerm}
+                />
+            </div>
+        </div>
 
         {/* Cards */}
         {/* gutter는 이미지 사이의 여백 기능 */ }

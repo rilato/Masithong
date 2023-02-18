@@ -35,6 +35,8 @@ function UploadReviewPage(props) {
     const [Images, setImages] = useState([])
     // 평점 설정
     const [Grade, setGrade] = useState([false, false, false, false, false])
+
+    const [Product, setProduct] = useState([])
     
     const reviewChangeHandler = (event) => {
         setReview(event.currentTarget.value)
@@ -55,6 +57,16 @@ function UploadReviewPage(props) {
         setGrade(gradeStates);
     }
     
+    // Product.js의 모든 정보를 가져온 후, 별점의 총 합과 리뷰한 사람의 총 합을 세팅
+    useEffect(() => {
+        Axios.get(`/api/product/products_by_id?id=${productId}&type=single`)
+        .then(response => {
+            setProduct(response.data[0])
+            console.log("Product : ", response.data[0])
+        })
+        .catch(err => alert(err))
+    }, []);
+
     useEffect(() => {
         setStar();
     }, [Grade]);
@@ -98,7 +110,7 @@ function UploadReviewPage(props) {
             .then(response => {
                 if (response.data.success) {
                     alert('식당 리뷰 업로드에 성공 했습니다.')
-                    navigate('/') // 상품 업로드 성공시 자동적으로 LandingPage로 이동하도록 함
+                    navigate(`/product/${productId}`) // 상품 업로드 성공시 자동적으로 DetailProductPage로 이동하도록 함
                 } else {
                     alert('식당 리뷰 업로드에 실패 했습니다.')
                 }
@@ -112,6 +124,25 @@ function UploadReviewPage(props) {
                 } else {
                   console.log(error);
                 }
+            });
+        
+
+        const body2 = {
+            _id: productId,
+            starCount: Grade.filter(Boolean).length + Product.starCount,
+            reviewCount: Product.reviewCount + 1,
+            averageStar: (Grade.filter(Boolean).length + Product.starCount)/(Product.reviewCount + 1)
+        }
+    
+        // 저장할 내용을 백엔드로 보내기 위해 post request
+        // 서버쪽의 product 라우트와 연결 (server/routes/product.js)
+        Axios.post('/api/product/updateStar', body2)
+            .then(res => {
+                console.log(res.data);
+                alert('리뷰 업데이트에 성공 했습니다.')
+                })
+                .catch(err => {
+                console.error(err);
             });
     }
 

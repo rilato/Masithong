@@ -26,11 +26,26 @@ router.post('/getRequestedRestaurant', (req, res) => {
         })
 })
 
+
+
+
 // client의 ApproveRestaurantPage.js에서 보낸 request 또는 UploadRequestedProductPage.js에서 보낸 request
 // 식당 등록을 완료한 경우, 버튼을 누르면 식당 요청을 없애야함
 router.post('/removeRestaurant', (req, res) => {
     // RequestRestaurant DB에서 즐겨찾기를 해제 하려는 사람의 userFrom과 해당 식당을 가리키는 restaurantId를 찾고 RequestRestaurant DB에 있는 정보를 지운다
-    RequestRestaurant.findOneAndDelete({ restaurantId: req.body.restaurantId, userFrom: req.body.userFrom })
+    RequestRestaurant.findOneAndDelete({ _id: req.body.restaurantId, userFrom: req.body.userFrom })
+        // 이를 바탕으로 쿼리문 실행, doc에는 쿼리가 실행된 결과가 담겨 프론트에 res로 보냄
+        .exec((err, doc) => {
+            if (err) return res.status(400).send(err)
+            res.status(200).json({ success: true, doc })
+        })
+})
+
+
+// 관리자가 식당 등록을 최종 승인할 때, 요청 목록에서 해당 식당 id를 찾아 db에서 한 개 지워주는 라우터
+router.post('/removeSpecificRestaurant', (req, res) => {
+    // RequestRestaurant DB에서 특정 restaurantId를 찾고 RequestRestaurant DB에 있는 정보를 지운다
+    RequestRestaurant.findOneAndDelete({ _id: req.body.restaurantId})
         // 이를 바탕으로 쿼리문 실행, doc에는 쿼리가 실행된 결과가 담겨 프론트에 res로 보냄
         .exec((err, doc) => {
             if (err) return res.status(400).send(err)
