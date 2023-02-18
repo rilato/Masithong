@@ -21,6 +21,7 @@ function SingleComment(props) {
     // Reply to 버튼 클릭 시 openReply가 toggle되어 reply를 달 수 있도록 하는 부분
     const onClickReplyOpen = () => {
         setOpenReply(!OpenReply)
+        props.toggle()
     }
 
     // 여기서 e는 event
@@ -41,6 +42,7 @@ function SingleComment(props) {
                 if (response.data.success) {
                     setCommentValue("") // 얘를 해줘야 답글 제출시, 답글을 입력하는 창이 비어있게 됨. 그렇지 않으면 내가 썼던 답글 그대로 입력 창에 남아있게 됨
                     setOpenReply(!OpenReply) // 답글을 작성한 후, 답글 다는 창이 없어져야 하기 때문에 이 코드 추가
+                    props.toggle()
                     props.refreshFunction(response.data.result)
                 } else {
                     alert('Failed to save Comment')
