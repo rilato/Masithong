@@ -54,7 +54,7 @@ function RightMenu(props) {
     if (user.userData && user.userData.isAuth && user.userData.isAdmin) {
         // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
         return (
-            <Menu mode={props.mode}>
+            <Menu mode={props.mode} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Menu.Item key="approveRestaurant">
                     {/* Favorite 버튼 누르면 /favorite endpointer에 해당하는 페이지로 갈 수 있도록 href지정 */}
                     <a href="/approveRestaurant">업로드 요청</a>
@@ -74,7 +74,7 @@ function RightMenu(props) {
     else if (user.userData && user.userData.isAuth && !user.userData.isAdmin) {
         // userData는 user_reducer.js와 연관, isAuth는 client의 !response.payload.isAuth에서도 등장.
         return (
-            <Menu mode={props.mode}>
+            <Menu mode={props.mode} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {/** 관리자에게 업로드를 요청하는 부분, 아직 미구현 */}
                 <Menu.Item key="requestRestaurant">
                     <a href="/requestRestaurant">식당 업로드 요청</a>
@@ -91,7 +91,7 @@ function RightMenu(props) {
     } else {
         // 로그인 안했을 때 우측 상단에 보이는 메뉴들
         return (
-            <Menu mode={props.mode}>
+            <Menu mode={props.mode} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Menu.Item key="mail">
                     <a href="/login">로그인</a>
                 </Menu.Item>
