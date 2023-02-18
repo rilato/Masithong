@@ -32,8 +32,8 @@ function LandingPage(props) {
       price: []
   })
   const [SearchTerm, setSearchTerm] = useState("")
-  const [timeOrder, setTimeOrder] = useState(true); // state for time order
-  const [likeOrder, setLikeOrder] = useState(false); // state for like order
+  const [timeOrder, setTimeOrder] = useState(true); // 시간순
+  const [likeOrder, setLikeOrder] = useState(false); // 좋아요순
 
 
   useEffect(() => {
@@ -204,18 +204,15 @@ const updateSearchTerm = (newSearchTerm) => {
 
 
 
-
-// event handler for time order button
 const handleTimeOrder = () => {
     setTimeOrder(true);
     setLikeOrder(false);
-};
+}
 
-// event handler for like order button
 const handleLikeOrder = () => {
     setTimeOrder(false);
     setLikeOrder(true);
-};
+}
 
 
 // return 아래 쪽이 html을 짜는 공간
