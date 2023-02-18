@@ -39,13 +39,13 @@ function NavBar() {
         <div className="menu_rigth">
           <RightMenu mode="horizontal" />
         </div>
-        <Button
+        {/*<Button
           className="menu__mobile-button"
           type="primary"
           onClick={showDrawer}
         >
           <Icon type="align-right" />
-        </Button>
+        </Button>*/}
         <Drawer
           title="Basic Drawer"
           placement="right"
