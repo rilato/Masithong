@@ -26,7 +26,7 @@ function Comments(props) {
         const variables = {
             content: Comment,
             writer: user.userData._id, // redux에서 로그인된 유저의 정보를 가져오는 방식, react-redux에서 useSelector를 추가
-            postId: props.postId // DetailProductPage.js에서 맨 밑부분 Comments부분에서 props를 이용하여 postId를 가져오는 방식
+            postId: props.postId // DetailReviewPage.js에서 맨 밑부분 Comments부분에서 props를 이용하여 postId를 가져오는 방식
         }
 
         // 댓글이 실제로 저장되는 곳 설정
@@ -74,10 +74,10 @@ function Comments(props) {
                     style={{ width: '100%', borderRadius: '5px' }}  // borderRadius는 테두리를 둥글게 하기 위한 코드
                     onChange={handleChange} // 댓글 창에 글을 쓸 수 있게 하기 위한 코드
                     value={Comment} // value에 state을 줘야 함 그렇게 하기 위해 useState사용, 이 Comment는 위의 const variables의 Comment로도 사용
-                    placeholder="write some comments"
+                    placeholder="댓글을 작성해주세요!"
                 />
                 <br />
-                <Button style={{ width: '25%', height: '52px' }} onClick={onSubmit}>댓글</Button>
+                <Button style={{ width: '10%', height: '70px' }} onClick={onSubmit}>댓글</Button>
             </form>
 
         </div>

@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Comment, Avatar, Button, Input } from 'antd';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
+import LikeDislikes from './LikeDislikes';
 
 const { TextArea } = Input;
 
@@ -49,7 +50,8 @@ function SingleComment(props) {
 
     // 댓글에 대한 답글을 위한 actions
     const actions = [
-        //<LikeDislikes comment commentId={props.comment._id} userId={localStorage.getItem('userId')} />,
+        // 댓글에 좋아요 싫어요 버튼을 위해 설정
+        <LikeDislikes comment commentId={props.comment._id} userId={localStorage.getItem('userId')} />,
         // Reply to 버튼 클릭 시 openReply 작동
         <span onClick={onClickReplyOpen} key="comment-basic-reply-to"> Reply to </span>
     ]
@@ -80,10 +82,10 @@ function SingleComment(props) {
                         style={{ width: '100%', borderRadius: '5px' }}
                         onChange={handleChange}
                         value={CommentValue}
-                        placeholder="write some comments"
+                        placeholder="답글을 작성해주세요!"
                     />
                     <br />
-                    <Button style={{ width: '25%', height: '52px' }} onClick={onSubmit}>답글</Button>
+                    <Button style={{ width: '10%', height: '70px' }} onClick={onSubmit}>답글</Button>
                 </form>
             }
 

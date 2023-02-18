@@ -139,8 +139,59 @@ router.get('/products_by_id', (req, res) => {
         .exec((err, product) => {
             if (err) return res.status(400).send(err)
             return res.status(200).send(product)
+    })
+})
+
+
+// UploadReviewPage.js와 연관
+router.post('/updateStar', (req, res) => {
+    Product.findOneAndUpdate(
+        {_id: req.body._id},
+        {reviewCount: req.body.reviewCount, starCount: req.body.starCount, averageStar: req.body.averageStar},
+        )
+        .then(Product=>res.json(Product))
+        .catch(err=>res.status(400).json(err));
+})
+
+
+// EditReviewPage.js에서 get request를 요청하면, 여기서 식당 ID에 관련된 모든 리뷰를 찾아 다시 보내줌. 
+router.post('/product_by_id', (req, res) => {
+    //_id를 이용해서 DB에서 _id와 같은 상품의 정보를 가져온다.
+    Product.find({ "_id" : req.body._id })
+        .populate('writer') // writer의 모든 정보를 가져와서 읽는다
+        // 쿼리를 실행한다
+        .exec((err, product) => {
+            if (err) return res.status(400).send(err)
+            return res.status(200).json({success: true, product})
         })
 })
+
+
+
+router.get('/findProduct', (req, res) => {
+    Product.findById(req.query.id)
+      .populate('writer')
+      .exec((err, product) => {
+        console.log("req.query.id : ", req.query.id)
+        if (err) return res.status(500).json({ error: err });
+        if (!Product) return res.status(404).json({ message: 'Product not found' });
+        res.json(product);
+      });
+  });
+
+
+// EditReviewPage.js에서 post request를 요청하면, 여기서 특정 리뷰 id에 맞는 리뷰를 찾아 다시 보내줌. 
+router.post('/product_by_productId', (req, res) => {
+    //_id를 이용해서 DB에서 _id와 같은 상품의 정보를 가져온다.
+    Product.find({ "_id" : req.body.productId })
+        .populate('writer')
+        // 쿼리를 실행한다
+        .exec((err, product) => {
+            if (err) return res.status(400).send(err)
+            return res.status(200).json({success: true, product})
+        })
+})
+
 
 // routes폴더 안의 파일로, 라우터 기능을 하므로, exports router
 module.exports = router;

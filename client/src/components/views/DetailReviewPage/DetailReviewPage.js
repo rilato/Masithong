@@ -6,7 +6,7 @@ import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import {Col, Card, Row, Carousel,Descriptions,Avatar,Space,Button } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
+import {Col, Row, List, Descriptions, Avatar, Button } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
 import Icon, { UserOutlined } from '@ant-design/icons';
 import ImageSlider from '../../utils/ImageSlider';
 import Meta from 'antd/lib/card/Meta';
@@ -15,6 +15,8 @@ import styled from 'styled-components';
 import { Rate } from 'antd';
 import Comments from './Sections/Comments';
 import DetailReviewImage from './Sections/DetailReviewImage';
+import LikeDislikes from './Sections/LikeDislikes';
+
 function DetailReviewPage() {
 
     const user = useSelector(state => state.user)
@@ -25,6 +27,8 @@ function DetailReviewPage() {
    
     const [DetailReview, setDetailReview] = useState([])
     const [CommentLists, setCommentLists] = useState([]) // 댓글 설정
+    const [productId, setProductId] = useState("")
+    const [Toggle, setToggle] = useState(0)
   // 몽고DB에서 해당 id번호에 맞는 리뷰 내용 가져오기
   useEffect(() => {
     fetchDetailReview() // 리뷰 상세보기 페이지에 들어오자마자 일단 이 함수 한 번 실행, remove버튼을 누르면 이 함수 한 번 더 실행 (onClickDelete에서 구현)
@@ -53,16 +57,22 @@ const fetchDetailReview = () => {
           if (response.data.success) {
             console.log('response.data.review',response.data.review[0])
             setDetailReview(response.data.review)
-            
-            
-            
-          }  else {
+            setProductId(response.data.review[0].restaurantId._id)
+          } else {
             alert('Failed to get DetailReviewInfo')
         }
       })
 
     
 }
+
+
+
+// 새로운 댓글을 추가하면, 기존의 댓글에 더불어 함께 추가된 댓글이 보이도록 하기 위함 (concat)
+const updateComment = (newComment) => {
+  setCommentLists(CommentLists.concat(newComment))
+}
+
 
 
 const renderCards= DetailReview.map((Review,index) =>{
@@ -73,11 +83,11 @@ const renderCards= DetailReview.map((Review,index) =>{
   return (
         
     
-        <Row justify="center" >
+      <Row justify="center" >
              
          
           
-            <Col align="middle" margin="20%" style={{ marginBottom: '30px' }}  >
+        <Col align="middle" margin="20%" style={{ marginBottom: '30px' }}  >
          <Descriptions layout='horizontal' size="small" >
              <Descriptions.Item ><Avatar size={48} icon={<UserOutlined/>}/> 
              &nbsp;&nbsp;&nbsp;{Review.writer.name} </Descriptions.Item>
@@ -89,7 +99,7 @@ const renderCards= DetailReview.map((Review,index) =>{
              </Descriptions.Item>
          </Descriptions>
          
-         </Col>
+        </Col>
          
 
         
@@ -97,18 +107,10 @@ const renderCards= DetailReview.map((Review,index) =>{
          
          
          <Col align="middle">
-         <DetailReviewImage detail={Review}/>
+          <DetailReviewImage detail={Review}/>
          </Col>
-         
-        
-         
-         
 
-         
- </Row>    
- 
-
- 
+       </Row>    
 )})
 
 
@@ -120,26 +122,29 @@ return (
     <div style={{ width: '100%', padding: '4rem 12rem', justifyContent: 'center'}}>
      
      
-     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+     <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
         {/* 버튼 간의 간격 조절을 위해 margin 설정 */}
-        <div style={{ marginRight: '5px', marginBottom: '10px' }}>
-          
-          
-          <a href={`/editReview/${reviewId}`}><Button>리뷰 수정</Button></a>
-          
+        <div style={{ marginLeft: '83%' }}>
+        <a href={`/product/${productId}`}><Button>식당 정보</Button></a>
         </div>
-        
+        <div style={{ marginLeft: '10px' }}>
+          <a href={`/editReview/${reviewId}`}><Button>리뷰 수정</Button></a>
+        </div>
      </div>
      
          {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
         {/*<div style={{margin:'10px 20%'}}>*/} 
          {renderCards}
        
-         
-       
+
+        {/* 리뷰 좋아요 싫어요 기능 */} 
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <List.Item actions={[<LikeDislikes DetailReview reviewId={reviewId} userId={localStorage.getItem('userId')}/>]}></List.Item>
+        </div>
         
         <br />
-        
+
+        <Comments CommentLists={CommentLists} postId={reviewId} refreshFunction={updateComment} />
             
        
   </div>
