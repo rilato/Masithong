@@ -40,6 +40,12 @@ function DetailProductPage(props) {
   const [Limit, setLimit] = useState(5) // Limit : 처음 데이터를 가져올 때와 더보기 버튼을 눌러서 가져올 때 얼마나 많은 데이터를 한 번에 가져오는지 결정하는 메소드
   // 현재는 Limit을 통해, 더보기를 누르기 전에는 8개의 상품만 보이도록 설정
   const [PostSize, setPostSize] = useState(0)
+  // 시간순, 좋아요순, 평점순
+  const [SelectedButton, setSelectedButton] = useState('시간순');
+
+  const handleButtonClick = (buttonName) => {
+    setSelectedButton(buttonName);
+  };
 
 
   // useEffect 라는 Hook 을 사용하면 컴포넌트가 마운트 됐을 때 (처음 나타났을 때), 언마운트 됐을 때 (사라질 때), 그리고 업데이트 될 때 (특정 props가 바뀔 때)
@@ -151,7 +157,7 @@ function DetailProductPage(props) {
             </Col>
         </Row>
         <br />
-        <p> 리뷰 </p>
+        <p style={{ fontSize: '20px', fontWeight: 'bold' }}> Review </p>
         <hr />
         <div style={{margin: '1rem auto'}}>
         <ReviewInfo ReviewLists={ReviewLists} />
@@ -210,7 +216,30 @@ function DetailProductPage(props) {
             </Col>  
         </Row>
         <br />
-        <p> 리뷰 </p>
+        <div>
+          <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
+            Review
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              type={SelectedButton === '시간순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('시간순')}
+            >
+              시간순
+            </Button>
+            <Button
+              type={SelectedButton === '좋아요순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('좋아요순')}
+            >
+              좋아요순
+            </Button>
+            <Button
+              type={SelectedButton === '평점순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('평점순')}
+            >
+              평점순
+            </Button>
+          </div>
+        </div>
         <hr />
         <div style={{margin: '1rem auto'}}>
         <ReviewInfo ReviewLists={ReviewLists}  />

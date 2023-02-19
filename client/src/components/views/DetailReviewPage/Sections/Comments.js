@@ -13,10 +13,22 @@ function Comments(props) {
     const user = useSelector(state => state.user) // redux를 통해 로그인된 유저의 정보를 가져오기 위해 사용
     const [Comment, setComment] = useState("")
     const [OpenComments, setOpenComments] = useState(true)
+    const [timeOrder, setTimeOrder] = useState(true); // 시간순
+    const [likeOrder, setLikeOrder] = useState(false); // 좋아요순
 
     // 사용자가 댓글 칸에 타이핑할 수 있도록 하는 함수
     const handleChange = (e) => {
         setComment(e.currentTarget.value)
+    }
+
+    const handleTimeOrder = () => {
+        setTimeOrder(true);
+        setLikeOrder(false);
+    }
+    
+    const handleLikeOrder = () => {
+        setTimeOrder(false);
+        setLikeOrder(true);
     }
 
     const toggle = () => {
@@ -51,7 +63,18 @@ function Comments(props) {
     return (
         <div>
             <br />
-            <p> 댓글 </p>
+            <div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
+                    댓글
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Button type={timeOrder ? "primary" : "default"} onClick={handleTimeOrder}>
+                        시간순
+                    </Button>
+                    <Button type={likeOrder ? "primary" : "default"} onClick={handleLikeOrder}>
+                        인기순
+                    </Button>
+                </div>
+            </div>
             <hr />
 
             {/* Comment Lists  */}
