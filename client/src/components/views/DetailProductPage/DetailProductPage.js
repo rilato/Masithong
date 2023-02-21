@@ -3,7 +3,7 @@
 이 값은 자식 컴포넌트에서 활용은 가능하지만 수정은 불가하다.
 이 값의 변경이 필요하다면 반드시 부모에서 변경해야만 한다.*/
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,  useState } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Row, Col,Avatar,Space,Card ,Select,Rate} from 'antd';
@@ -47,13 +47,7 @@ function DetailProductPage(props) {
   
   const [selectedStarRate, setSelectedStarRate] = useState(0);
   
-  const handleSelectChange = (value) => {
-      setSelectedStarRate(parseInt(value));
-    };
-
-  const handleButtonClick = (buttonName) => {
-    setSelectedButton(buttonName);
-  };
+  
 
 
   
@@ -69,6 +63,7 @@ function DetailProductPage(props) {
             setProduct(response.data[0])
             console.log("productId : ", productId)
             console.log("response.data[0] : ", response.data[0])
+            
         })
         .catch(err => alert(err))
     
@@ -83,7 +78,28 @@ function DetailProductPage(props) {
       getReviews(body)
   }, [])
 
+  const handleSelectChange = (value) => {
+    
+    console.log('selected',value);
+    let curSelectedStar={...selectedStarRate};
+    curSelectedStar=parseInt(value);
+    
+    
+    
+    let body = {
+      skip: 0,    // 검색시 DB에 있는 맛집들 중 처음부터 긁어와야 하므로 0
+      limit: Limit,   // limit은 8로 동일하게 설정
+      productId: productId,
+      selectedStarRate:curSelectedStar,
+    }
+      setSkip(0); 
+      setSelectedStarRate(curSelectedStar);
+      getReviews(body);
+    };
 
+  const handleButtonClick = (buttonName) => {
+    setSelectedButton(buttonName);
+  };
 
   const getReviews = (body) => {
     axios.post('/api/review/reviews', body) // endpointer 설정, 백엔드의 product.js와 연관
@@ -92,10 +108,13 @@ function DetailProductPage(props) {
             if (response.data.success) {
                 // loadMoreHandler의 body에서 loadMore가 true인 상황인 경우, 더보기 버튼을 눌렀을 때 기존의 상품들과 더불어 추가된 상품이 함께 보이도록 함
                 // 이 부분이 없으면, 더보기 버튼을 누르면 이전 상품들이 사라지고, 새롭게 로드된 상품들만 보임 (페이지 추가해서 다음 페이지로 이동시 이걸 써서 구현하면 될 듯)
+                console.log('aaaa',response.data.reviewInfo)
                 if (body.loadMore) {
                     setReviewLists([...ReviewLists, ...response.data.reviewInfo])
+                    
                 } else {
                     setReviewLists(response.data.reviewInfo)
+                    console.log('bbbb',ReviewLists);
                 }
                 setPostSize(response.data.postSize) // 더보기 버튼을 보이게 할지 안보이게 할지를 설정
             // 실패한 경우
@@ -170,8 +189,38 @@ function DetailProductPage(props) {
             </Col>
         </Row>
         <br />
-        <p style={{ fontSize: '20px', fontWeight: 'bold' }}> Review </p>
+        <div>
+          <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
+            Review
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              type={SelectedButton === '시간순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('시간순')}
+            >
+              시간순
+            </Button>
+            <Button
+              type={SelectedButton === '좋아요순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('좋아요순')}
+            >
+              좋아요순
+            </Button>
+            <Button
+              type={SelectedButton === '평점순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('평점순')}
+            >
+              평점순
+            </Button>
+          </div>
+          
+        </div>
         <hr />
+        <div>
+          <Select defaultValue="0" onChange={handleSelectChange} 
+          options={[{value:"0",label:"별점선택"},{value:'5',label:"별점 5"},{value:'4',label:"별점 4"},{value:'3',label:"별점 3"},{value:'2',label:"별점 2"},{value:'1',label:"별점 1"},]}/>
+          {selectedStarRate > 0 && <Rate value={selectedStarRate} />}
+        </div>
+        
         <div style={{margin: '1rem auto'}}>
         <ReviewInfo ReviewLists={ReviewLists} />
         </div>
@@ -182,7 +231,8 @@ function DetailProductPage(props) {
               <Button style={{ borderRadius: '5px', background: '#f6f6f9' }} onClick={loadMoreHandler}>더보기</Button>
           </div>
         }
-        <br />          
+        <br />
+                 
       </div>
     )
   }
@@ -256,15 +306,10 @@ function DetailProductPage(props) {
         </div>
         <hr />
         <div>
-          <Select defaultValue="0" onChange={handleSelectChange}>
-            <Option value="0">별점 선택</Option>
-            <Option value="5">별점 5 </Option>
-            <Option value="4">별점 4</Option>
-            <Option value="3">별점 3</Option>
-            <Option value="2">별점 2</Option>
-            <Option value="1">별점 1</Option>
-          </Select>
+        <Select defaultValue="0" onChange={handleSelectChange} 
+          options={[{value:"0",label:"별점선택"},{value:"5",label:"별점 5"},{value:"4",label:"별점 4"},{value:"3",label:"별점 3"},{value:"2",label:"별점 2"},{value:"1",label:"별점 1"},]}/>
           {selectedStarRate > 0 && <Rate value={selectedStarRate} disabled defaultValue={selectedStarRate} />}
+          
         </div>
         <div style={{margin: '1rem auto'}}>
         <ReviewInfo ReviewLists={ReviewLists}  />
