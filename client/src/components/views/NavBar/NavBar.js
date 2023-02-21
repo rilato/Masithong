@@ -27,7 +27,7 @@ function NavBar() {
 
   return (
     // menu__logo, menu__container 등은 Sections/Navbar.css에서 정의해 놓았음
-    <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
+    <nav className="menu" style={{ position: 'absolute', zIndex: 5, width: '100%'}}>
       <div className="menu__logo">
         <a href="/">맛있홍 <SmileOutlined/></a>
       </div>
@@ -36,16 +36,16 @@ function NavBar() {
           {/* LeftMenu, RightMenu는 모두 Sections/ 내부의 파일에서 가져온 것들 */}
           <LeftMenu mode="horizontal" />
         </div>
-        <div className="menu_rigth">
+        <div className="menu_right">
           <RightMenu mode="horizontal" />
         </div>
-        {/*<Button
+        <Button
           className="menu__mobile-button"
           type="primary"
           onClick={showDrawer}
         >
           <Icon type="align-right" />
-        </Button>*/}
+        </Button>
         <Drawer
           title="Basic Drawer"
           placement="right"

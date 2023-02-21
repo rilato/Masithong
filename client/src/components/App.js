@@ -20,10 +20,10 @@ import NavBar from "./views/NavBar/NavBar";
 import UploadProductPage from "./views/UploadProductPage/UploadProductPage";
 import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
 import FavoritePage from "./views/FavoritePage/FavoritePage";
-import Newpassword from "./views/Newpassword/Newpassword";
+import NewpasswordPage from "./views/NewpasswordPage/NewpasswordPage";
 import RequestRestaurantPage from "./views/RequestRestaurantPage/RequestRestaurantPage";
 import ApproveRestaurantPage from "./views/ApproveRestaurantPage/ApproveRestaurantPage";
-import EmailConfirm from "./views/EmailConfirmPage/EmailConfirm";
+import EmailConfirmPage from "./views/EmailConfirmPage/EmailConfirmPage";
 import UploadReviewPage from "./views/UploadReviewPage/UploadReviewPage"
 import DetailReviewPage from "./views/DetailReviewPage/DetailReviewPage";
 import UploadRequestedProductPage from "./views/UploadRequestedProductPage/UploadRequestedProductPage";
@@ -101,7 +101,7 @@ function App() {
                         />
                         <Route
                             path="/Newpassword"
-                            element={Auth(Newpassword, null)}
+                            element={Auth(NewpasswordPage, null)}
                         />
                         <Route
                             path="/requestRestaurant"
@@ -113,7 +113,7 @@ function App() {
                         />
                         <Route
                             path="/EmailConfirm"
-                            element={Auth(EmailConfirm, null)}
+                            element={Auth(EmailConfirmPage, null)}
                         />
                         <Route
                             path="/product/uploadReview/:productId"
