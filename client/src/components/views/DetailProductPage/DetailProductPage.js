@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Row, Col,Avatar,Space,Card } from 'antd';
+import { Button, Row, Col,Avatar,Space,Card ,Select,Rate} from 'antd';
 import { useSelector } from "react-redux";
 import ProductImage from './Sections/ProductImage';
 import ProductInfo from './Sections/ProductInfo';
@@ -22,7 +22,7 @@ import styled from "styled-components";
 function DetailProductPage(props) {
   // 로그인 정보를 가져오기 위한 코드
   const user = useSelector(state => state.user)
-
+  const { Option } = Select;
   //const productId = props.match.params.productId
 
   /* useParams는 리액트에서 제공하는 Hook으로 동적으로 라우팅을 생성하기 위해 사용
@@ -43,9 +43,20 @@ function DetailProductPage(props) {
   // 시간순, 좋아요순, 평점순
   const [SelectedButton, setSelectedButton] = useState('시간순');
 
+  //별점 순
+  
+  const [selectedStarRate, setSelectedStarRate] = useState(0);
+  
+  const handleSelectChange = (value) => {
+      setSelectedStarRate(parseInt(value));
+    };
+
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
   };
+
+
+  
 
 
   // useEffect 라는 Hook 을 사용하면 컴포넌트가 마운트 됐을 때 (처음 나타났을 때), 언마운트 됐을 때 (사라질 때), 그리고 업데이트 될 때 (특정 props가 바뀔 때)
@@ -65,7 +76,8 @@ function DetailProductPage(props) {
       let body = {
           skip: Skip, // skip은 0으로 초기화되었으므로 맨 처음 0으로 세팅
           limit: Limit, // limit은 8로 초기화되었으므로 맨 처음 8로 세팅
-          productId: productId
+          productId: productId,
+          
       }
 
       getReviews(body)
@@ -100,7 +112,8 @@ function DetailProductPage(props) {
         skip: skip,
         limit: Limit,
         loadMore: true,
-        productId: productId
+        productId: productId,
+        
     }
 
     getReviews(body)
@@ -239,8 +252,20 @@ function DetailProductPage(props) {
               평점순
             </Button>
           </div>
+          
         </div>
         <hr />
+        <div>
+          <Select defaultValue="0" onChange={handleSelectChange}>
+            <Option value="0">별점 선택</Option>
+            <Option value="5">별점 5 </Option>
+            <Option value="4">별점 4</Option>
+            <Option value="3">별점 3</Option>
+            <Option value="2">별점 2</Option>
+            <Option value="1">별점 1</Option>
+          </Select>
+          {selectedStarRate > 0 && <Rate value={selectedStarRate} disabled defaultValue={selectedStarRate} />}
+        </div>
         <div style={{margin: '1rem auto'}}>
         <ReviewInfo ReviewLists={ReviewLists}  />
         </div>

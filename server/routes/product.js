@@ -100,6 +100,8 @@ router.post('/products', (req, res) => {
             })
     // 물품이 검색되지 않았다면
     } else {
+
+        console.log('cc',findArgs);
         Product.find(findArgs)
             // 해당 상품이 없으므로, 여기서 .find를 한 번 더 써주지 않음
             .populate("writer")
