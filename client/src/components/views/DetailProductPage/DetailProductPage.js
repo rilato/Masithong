@@ -10,7 +10,6 @@ import { Button, Row, Col,Avatar,Space,Card } from 'antd';
 import { useSelector } from "react-redux";
 import ProductImage from './Sections/ProductImage';
 import ProductInfo from './Sections/ProductInfo';
-import Comments from './Sections/Comments';
 import Favorite from './Sections/Favorite';
 import KakaoMap from './Sections/KakaoMap';
 import ReviewInfo from './Sections/ReviewInfo';
@@ -34,7 +33,6 @@ function DetailProductPage(props) {
   const variable = { productId: productId }
 
   const [Product, setProduct] = useState([]) // 상품 설정
-  const [CommentLists, setCommentLists] = useState([]) // 댓글 설정
   const [ReviewLists, setReviewLists] = useState([]) //리뷰 설정
   // skip과 limit은 더보기 버튼 구현을 위해 필요
   const [Skip, setSkip] = useState(0) // Skip : 어디서부터 데이터를 가져오는지에 대한 위치(전에거는 스킵하고, 그 다음부터 데이터를 가져오겠다),
@@ -42,6 +40,12 @@ function DetailProductPage(props) {
   const [Limit, setLimit] = useState(5) // Limit : 처음 데이터를 가져올 때와 더보기 버튼을 눌러서 가져올 때 얼마나 많은 데이터를 한 번에 가져오는지 결정하는 메소드
   // 현재는 Limit을 통해, 더보기를 누르기 전에는 8개의 상품만 보이도록 설정
   const [PostSize, setPostSize] = useState(0)
+  // 시간순, 좋아요순, 평점순
+  const [SelectedButton, setSelectedButton] = useState('시간순');
+
+  const handleButtonClick = (buttonName) => {
+    setSelectedButton(buttonName);
+  };
 
 
   // useEffect 라는 Hook 을 사용하면 컴포넌트가 마운트 됐을 때 (처음 나타났을 때), 언마운트 됐을 때 (사라질 때), 그리고 업데이트 될 때 (특정 props가 바뀔 때)
@@ -52,20 +56,11 @@ function DetailProductPage(props) {
     axios.get(`/api/product/products_by_id?id=${productId}&type=single`)
         .then(response => {
             setProduct(response.data[0])
+            console.log("productId : ", productId)
+            console.log("response.data[0] : ", response.data[0])
         })
         .catch(err => alert(err))
     
-    // DB에서 모든 Comment 정보들을 가져오기, 백엔드의 comment.js 파일과 연관
-    axios.post('/api/comment/getComments', variable)
-        .then(response => {
-          if (response.data.success) {
-              console.log('response.data.comments',response.data.comments)
-              setCommentLists(response.data.comments)
-          } else {
-              alert('Failed to get comment Info')
-          }
-        })
-
       // 여기서 작성한 body는 getReviews함수의 argument로 전달되고, 백엔드의 product.js에서 받아서 사용
       let body = {
           skip: Skip, // skip은 0으로 초기화되었으므로 맨 처음 0으로 세팅
@@ -97,12 +92,6 @@ function DetailProductPage(props) {
             }
         })
   }
-  
-  // 새로운 댓글을 추가하면, 기존의 댓글에 더불어 함께 추가된 댓글이 보이도록 하기 위함 (concat)
-  const updateComment = (newComment) => {
-    setCommentLists(CommentLists.concat(newComment))
-  }
-
   // 더보기 버튼 구현을 위한 함수
   const loadMoreHandler = () => {
     // 더보기를 눌렀을 때, 그 다음 물품을 가져와야 하므로, skip을 재조정
@@ -135,7 +124,7 @@ function DetailProductPage(props) {
         <Row gutter={[16, 16]} >
             {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
             <Col lg={12} sm={24}>
-                <StarInfo ReviewLists={ReviewLists} />
+                <StarInfo detail={Product.averageStar} />
               {/* ProductImage.js에서 가져온 내용을 위치시키는 곳 */}
               {/*
                 컴포넌트(함수를 만들어 <함수/>로 사용하는 걸 말하는 듯) 만드는 법
@@ -168,10 +157,10 @@ function DetailProductPage(props) {
             </Col>
         </Row>
         <br />
-        <p> 리뷰 </p>
+        <p style={{ fontSize: '20px', fontWeight: 'bold' }}> Review </p>
         <hr />
         <div style={{margin: '1rem auto'}}>
-        <ReviewInfo ReviewLists={ReviewLists}  />
+        <ReviewInfo ReviewLists={ReviewLists} />
         </div>
           {/* PostSize는 product.js에서 productInfo.length를 의미, Limit 이상이라는 것은 더이상 DB에서 불러올 데이터가 없음을 의미 -> 더보기버튼이 더이상 보이지 않음 */}
           {PostSize >= Limit &&
@@ -215,7 +204,7 @@ function DetailProductPage(props) {
         <Row gutter={[16, 16]} >
             {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
             <Col lg={12} sm={24}>
-                <StarInfo ReviewLists={ReviewLists} />
+                <StarInfo detail={Product.averageStar} />
                 {/* ProductImage.js에서 가져온 내용을 위치시키는 곳 */}
                 <ProductImage detail={Product} />  
             </Col>
@@ -227,7 +216,30 @@ function DetailProductPage(props) {
             </Col>  
         </Row>
         <br />
-        <p> 리뷰 </p>
+        <div>
+          <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
+            Review
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              type={SelectedButton === '시간순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('시간순')}
+            >
+              시간순
+            </Button>
+            <Button
+              type={SelectedButton === '좋아요순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('좋아요순')}
+            >
+              좋아요순
+            </Button>
+            <Button
+              type={SelectedButton === '평점순' ? 'primary' : 'default'}
+              onClick={() => handleButtonClick('평점순')}
+            >
+              평점순
+            </Button>
+          </div>
+        </div>
         <hr />
         <div style={{margin: '1rem auto'}}>
         <ReviewInfo ReviewLists={ReviewLists}  />
@@ -260,7 +272,7 @@ function DetailProductPage(props) {
         <Row gutter={[16, 16]} >
             {/* 화면의 크기에 따라 이미지를 조정하기 위해 아래의 코드 입력*/}
             <Col lg={12} sm={24}>
-                <StarInfo ReviewLists={ReviewLists} />
+                <StarInfo detail={Product.averageStar} />
                 {/* ProductImage.js에서 가져온 내용을 위치시키는 곳 */}
                 <ProductImage detail={Product} />
             </Col>

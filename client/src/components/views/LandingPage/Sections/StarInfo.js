@@ -21,14 +21,7 @@ function StarInfo(props) {
 
     const showStar = () => {
         return (
-            <Descriptions layout='horizontal' title="식당 정보">
-                <Descriptions.Item label="평점" labelStyle={{ marginTop: '15px' }} contentStyle={{ marginTop: '15px' }}>
-                    {`${RoundAverageStar}점`}
-                </Descriptions.Item>
-                <Descriptions.Item>
-                    <StarRate AverageStar={AverageStar}/>    
-                </Descriptions.Item>  
-            </Descriptions>
+            <StarRate AverageStar={AverageStar}>{RoundAverageStar}점</StarRate>
         )
     }
     

@@ -22,7 +22,9 @@ const RestaurantTypes = [
 function UploadRequestedProductPage(props) {
     const navigate = useNavigate();
     const { approveRestaurantId } = useParams(); 
+    const restaurantId=approveRestaurantId;
     const variable = { approveRestaurantId: approveRestaurantId }
+    
 
     {/**
         useState의 () 안에 초기화 값을 넣어줘야 함.
@@ -71,9 +73,30 @@ function UploadRequestedProductPage(props) {
     const [Images, setImages] = useState([])
     //주소 State설정
     const [Address,SetAddress]=useState("")
+    //추천인 State설정
+    const[userFrom,SetUserId]=useState("");
+   
 
 
-    
+    // 몽고DB에서 등록 요청된 식당들을 가져오기
+    useEffect(() => {
+        // post request를 쓰면 상품은 가져오지만, {Restaurant.restaurantTitle}을 알아먹지 못한다!!
+        // 따라서 위와 같이 DB에서 아이템을 갖다 쓰고 싶으면 반드시 get request를 쓰도록 한다!!
+        Axios.get(`/api/requestRestaurant/restaurant_by_id?id=${approveRestaurantId}&type=single`)
+        .then(response => {
+            setRestaurant(response.data[0])
+        })
+        .catch(err => alert(err))
+    }, [])
+
+    useEffect(()=> {
+        setTitle(Restaurant.restaurantTitle)
+        setRestaurantType(Restaurant.restaurantTypes)
+        setDescription(Restaurant.restaurantDescription)
+        SetAddress(Restaurant.restaurantAddress)
+        SetUserId(Restaurant.userFrom)
+        
+    },[Restaurant])
 
     // 위에서 설정한 state를 실제로 입력되도록 하는 event 설정
     const titleChangeHandler = (event) => {
@@ -101,16 +124,8 @@ function UploadRequestedProductPage(props) {
     }
 
 
-    // 몽고DB에서 등록 요청된 식당들을 가져오기
-    useEffect(() => {
-        // post request를 쓰면 상품은 가져오지만, {Restaurant.restaurantTitle}을 알아먹지 못한다!!
-        // 따라서 위와 같이 DB에서 아이템을 갖다 쓰고 싶으면 반드시 get request를 쓰도록 한다!!
-        Axios.get(`/api/requestRestaurant/restaurant_by_id?id=${approveRestaurantId}&type=single`)
-        .then(response => {
-            setRestaurant(response.data[0])
-        })
-        .catch(err => alert(err))
-    }, [])
+    console.log('c',restaurantId);
+    console.log('d',userFrom)
 
 
     // 가격, 메뉴 이름을 쓸 수 있도록 Handler 설정, DB 변경 필요
@@ -137,14 +152,23 @@ function UploadRequestedProductPage(props) {
             address: Address,
         }
 
+        const variables = {
+            restaurantId,
+            
+            
+        }
+       
         // 저장할 내용을 백엔드로 보내기 위해 post request
         // 서버쪽의 product 라우트와 연결 (server/routes/product.js)
         Axios.post('/api/product', body)
             .then(response => {
                 if (response.data.success) {
                     alert('식당 정보 업로드에 성공 했습니다.')
-                    navigate('/approveRestaurant') // 상품 업로드 성공시 자동적으로 ApproveRestaurantPage로 이동하도록 함
-                } else {
+                    //navigate('/approveRestaurant')
+                    }
+                    
+                   
+                 else {
                     alert('식당 정보 업로드에 실패 했습니다.')
                 }
             })
@@ -159,6 +183,17 @@ function UploadRequestedProductPage(props) {
                 }
             });
 
+            Axios.post('/api/requestRestaurant/removeSpecificRestaurant', variables)
+            .then(response => {
+                if (response.data.success) {
+                    alert('해당 식당을 리스트에서 지우는데 성공했습니다.')
+                    navigate('/approveRestaurant')
+                } else {
+                    alert("해당 식당을 리스트에서 지우는데 실패했습니다.")
+                }
+            })
+        
+
 
         {/**
             원하는 기능 : 식당 등록시 자동으로 RequestRestaurant DB에 있던 해당 식당 관련 내용이 삭제되도록 하고 싶음.
@@ -166,6 +201,10 @@ function UploadRequestedProductPage(props) {
         */}
     }
 
+    console.log('이름',Title);
+    console.log('분류',RestaurantType);
+    console.log('가격',Price);
+    console.log('주소',Address);
     return (
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -178,34 +217,17 @@ function UploadRequestedProductPage(props) {
                 <br />
                 <br />
                 {/* antd에서 Col, Row를 추가 */}
-                <Row gutter={[16, 16]}>
-                    <Col lg={12} xs={24}>
+                
+                    
+                    <Col >
                         <label>이름</label>
                         {/* Input 다음에 나오는 코드는 onChange가 발생하면 value가 변하도록 함 */}
-                        <Input value={Restaurant.restaurantTitle} />
+                        <Input onChange={titleChangeHandler}  value={Title} />
                         <br />
                         <br />
                     </Col>
-                    <Col lg={12} xs={24}>
-                        <label>이름</label>
-                        {/* Input 다음에 나오는 코드는 onChange가 발생하면 value가 변하도록 함 */}
-                        <Input onChange={titleChangeHandler} placeholder={Restaurant.restaurantTitle} value={Title} />
-                        <br />
-                        <br />
-                    </Col>
-                    <Col lg={12} xs={24}>
-                        <label>분류</label>
-                        <br />
-                        <select value={Restaurant.restaurantTypes}>
-                            {/* map 메소드를 이용하면 위에서 정의한 RestaurantTypes의 각 아이템들을 하나 하나 컨트롤할 수 있음 */}
-                            {RestaurantTypes.map(item => (
-                                <option key={item.key} value={item.key}> {item.value}</option>
-                            ))}
-                        </select>
-                        <br />
-                        <br />
-                    </Col>
-                    <Col lg={12} xs={24}>
+                    
+                    <Col >
                         <label>분류</label>
                         <br />
                         <select onChange={typeChangeHandler} value={RestaurantType}>
@@ -217,38 +239,29 @@ function UploadRequestedProductPage(props) {
                         <br />
                         <br />
                     </Col>
-                    <Col lg={12} xs={24}>
+                    
+                    <Col >
                         <label>설명</label>
-                        <TextArea value={Restaurant.restaurantDescription} />
+                        <TextArea onChange={descriptionChangeHandler}  value={Description} />
                         <br />
                         <br />
                     </Col>
-                    <Col lg={12} xs={24}>
-                        <label>설명</label>
-                        <TextArea onChange={descriptionChangeHandler} placeholder={Restaurant.restaurantDescription} value={Description} />
-                        <br />
-                        <br />
-                    </Col>
-                    <Col lg={12} xs={24}>
+                    
+                    <Col>
                         <label>도로명주소</label>
-                        <TextArea value={Restaurant.restaurantAddress} />
-                        <br />
-                        <br />
-                    </Col>
-                    <Col lg={12} xs={24}>
-                        <label>도로명주소</label>
-                        <TextArea onChange={addressChangeHandler} placeholder={Restaurant.restaurantAddress} value={Address} />
+                        <TextArea onChange={addressChangeHandler}  value={Address} />
                         <br />
                         <br />
                     </Col>
                     {/* 화면이 줄어들면 Collapse가 하나씩 따로 보이고, 화면이 커지면 Collapse가 두 개로 보이도록 함 */}
-                    <Col lg={12} xs={24}>
+                    
+                    <Col >
                         <label>가격대(￦) / 1인</label>
                         <Input type="number" onChange={priceChangeHandler} value={Price} />
                         <br />
                         <br />
                     </Col>
-                </Row>
+                
                 <Button htmlType="submit">
                     확인
                 </Button>

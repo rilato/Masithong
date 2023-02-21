@@ -13,6 +13,7 @@ import Checkbox from './Sections/CheckBox';
 import Radiobox from './Sections/RadioBox';
 import SearchFeature from './Sections/SearchFeature';
 import { restaurantTypes, price } from './Sections/Datas';  // Datas.js에서는 function이 아닌, 정의된 변수 두 개를 가져와서 그것들을 사용할 것이므로 하나 하나 가져오는 듯
+import StarInfo from './Sections/StarInfo';
 
 // 어떠한 값을 다른 컴포넌트(다른 파일)에게 전달해줘야 할 때, props 를 사용
 function LandingPage(props) {
@@ -31,6 +32,8 @@ function LandingPage(props) {
       price: []
   })
   const [SearchTerm, setSearchTerm] = useState("")
+  const [timeOrder, setTimeOrder] = useState(true); // 시간순
+  const [likeOrder, setLikeOrder] = useState(false); // 좋아요순
 
 
   useEffect(() => {
@@ -39,13 +42,41 @@ function LandingPage(props) {
         skip: Skip, // skip은 0으로 초기화되었으므로 맨 처음 0으로 세팅
         limit: Limit // limit은 8로 초기화되었으므로 맨 처음 8로 세팅
     }
+    
 
-    getProducts(body)
-}, [])
+    if(timeOrder){
+        console.log("timeOrder : ", timeOrder)
+        getProducts(body)    // 시간순
+    } else {
+        getProductsByAverageStar(body)  // 평점순
+    }
 
-// 상품을 백엔드에서 가져오는 역할을 하는 함수
+}, [timeOrder])
+
+// 상품을 백엔드에서 시간 순으로 가져오는 역할을 하는 함수
 const getProducts = (body) => {
     axios.post('/api/product/products', body) // endpointer 설정, 백엔드의 product.js와 연관
+        .then(response => {
+            // 백엔드(product.js)에서 데이터 가져오는데 성공한 경우
+            if (response.data.success) {
+                // loadMoreHandler의 body에서 loadMore가 true인 상황인 경우, 더보기 버튼을 눌렀을 때 기존의 상품들과 더불어 추가된 상품이 함께 보이도록 함
+                // 이 부분이 없으면, 더보기 버튼을 누르면 이전 상품들이 사라지고, 새롭게 로드된 상품들만 보임 (페이지 추가해서 다음 페이지로 이동시 이걸 써서 구현하면 될 듯)
+                if (body.loadMore) {
+                    setProducts([...Products, ...response.data.productInfo])
+                } else {
+                    setProducts(response.data.productInfo)
+                }
+                setPostSize(response.data.postSize) // 더보기 버튼을 보이게 할지 안보이게 할지를 설정
+            // 실패한 경우
+            } else {
+                alert(" 상품들을 가져오는데 실패 했습니다.")
+            }
+        })
+}
+
+// 상품을 백엔드에서 평점 순으로 가져오는 역할을 하는 함수
+const getProductsByAverageStar = (body) => {
+    axios.post('/api/product/products_by_averageStar', body) // endpointer 설정, 백엔드의 product.js와 연관
         .then(response => {
             // 백엔드(product.js)에서 데이터 가져오는데 성공한 경우
             if (response.data.success) {
@@ -75,7 +106,12 @@ const loadMoreHandler = () => {
         filters: Filters
     }
 
-    getProducts(body)
+    if(timeOrder){
+        getProducts(body)    // 시간순
+    } else {
+        getProductsByAverageStar(body)  // 평점순
+    }
+
     setSkip(skip)
 }
 
@@ -91,7 +127,8 @@ const renderCards = Products.map((product, index) => {
         >
             <Meta
                 title={product.title}
-                description={`￦${product.price}`}   // ￦는 사용자에게 표시되어야하는 문자이므로, 여기에 추가하여 기입
+                description={[<div>평점 : {product.averageStar.toFixed(1)}점</div>, <div>1인당 예상 가격 : ￦{product.price}</div>]}
+                //description={`￦${product.price}`}   // ￦는 사용자에게 표시되어야하는 문자이므로, 여기에 추가하여 기입
             />
         </Card>
     </Col>
@@ -99,14 +136,19 @@ const renderCards = Products.map((product, index) => {
 
 // 체크박스를 통해 "음식의 종류로 필터링"된 결과물을 보여주기 위한 함수
 const showFilteredResults = (filters) => {
-  let body = {
-    skip: 0,    // 체크박스를 해제하면 다시 처음부터 보여줘야 하므로 0
-    limit: Limit,
-    filters: filters
-  }
+    let body = {
+        skip: 0,    // 체크박스를 해제하면 다시 처음부터 보여줘야 하므로 0
+        limit: Limit,
+        filters: filters
+    }
 
-  getProducts(body) // 백엔드에서 상품 가져오기
-  setSkip(0) // skip을 다시 0으로 세팅
+    if(timeOrder){
+        getProducts(body)    // 시간순
+    } else {
+        getProductsByAverageStar(body)  // 평점순
+    }
+
+    setSkip(0) // skip을 다시 0으로 세팅
 }
 
 // 체크박스를 통해 "가격으로 필터링"된 결과물을 보여주기 위한 함수
@@ -152,8 +194,26 @@ const updateSearchTerm = (newSearchTerm) => {
 
     setSkip(0) // skip을 0으로 세팅
     setSearchTerm(newSearchTerm) // SearchFeature.js에서 event.currentTarget.value를 newSearchTerm으로 받아서 useState 적용
-    getProducts(body) // body 값에 맞게 백엔드에서 가져오기
+    
+    if(timeOrder){
+        getProducts(body)    // 시간순
+    } else {
+        getProductsByAverageStar(body)  // 평점순
+    }
 }
+
+
+
+const handleTimeOrder = () => {
+    setTimeOrder(true);
+    setLikeOrder(false);
+}
+
+const handleLikeOrder = () => {
+    setTimeOrder(false);
+    setLikeOrder(true);
+}
+
 
 // return 아래 쪽이 html을 짜는 공간
 /* 주의사항은 return안에는 하나의 태그로 시작해서 하나의 태그로 끝나야 함.
@@ -212,14 +272,24 @@ return (
         </Row>
 
 
-        {/* Search */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto' }}> {/* 검색창을 우측 정렬하는 부분 */}
-            {/* SearchFeature은 SearchFeature.js에서 구현, SearchFeature에서 SearchTerm을 업데이트하기 위한 코드 */}
-            <SearchFeature
-                refreshFunction={updateSearchTerm}
-            />
-        </div>
+        <div style={{ display: 'flex', margin: '1rem auto' }}>
+            <div style={{float: 'left', width: '100%'}}>
+                <Button type={timeOrder ? "primary" : "default"} onClick={handleTimeOrder}>
+                    시간순
+                </Button>
+                <Button type={likeOrder ? "primary" : "default"} onClick={handleLikeOrder}>
+                    평점순
+                </Button>
+            </div>
 
+            {/* Search */}
+            <div style={{float: 'right'}}> {/* 검색창을 우측 정렬하는 부분 */}
+                {/* SearchFeature은 SearchFeature.js에서 구현, SearchFeature에서 SearchTerm을 업데이트하기 위한 코드 */}
+                <SearchFeature
+                    refreshFunction={updateSearchTerm}
+                />
+            </div>
+        </div>
 
         {/* Cards */}
         {/* gutter는 이미지 사이의 여백 기능 */ }

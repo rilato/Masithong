@@ -32,6 +32,21 @@ const productSchema = mongoose.Schema({
     address: {
         type: String,
         default: "홍대 주변 어딘가"
+    },
+    // 평점의 합
+    starCount: {
+        type: Number,
+        default: 0
+    },
+    // 리뷰를 올린 모든 사람들의 수
+    reviewCount: {
+        type: Number,
+        default: 0
+    },
+    // 식당의 평균 평점
+    averageStar: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true })
 

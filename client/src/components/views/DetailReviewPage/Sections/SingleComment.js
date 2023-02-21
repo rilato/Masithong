@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Comment, Avatar, Button, Input } from 'antd';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
+import LikeDislikes from './LikeDislikes';
 
 const { TextArea } = Input;
 
@@ -20,6 +21,7 @@ function SingleComment(props) {
     // Reply to 버튼 클릭 시 openReply가 toggle되어 reply를 달 수 있도록 하는 부분
     const onClickReplyOpen = () => {
         setOpenReply(!OpenReply)
+        props.toggle()
     }
 
     // 여기서 e는 event
@@ -40,6 +42,7 @@ function SingleComment(props) {
                 if (response.data.success) {
                     setCommentValue("") // 얘를 해줘야 답글 제출시, 답글을 입력하는 창이 비어있게 됨. 그렇지 않으면 내가 썼던 답글 그대로 입력 창에 남아있게 됨
                     setOpenReply(!OpenReply) // 답글을 작성한 후, 답글 다는 창이 없어져야 하기 때문에 이 코드 추가
+                    props.toggle()
                     props.refreshFunction(response.data.result)
                 } else {
                     alert('Failed to save Comment')
@@ -49,7 +52,8 @@ function SingleComment(props) {
 
     // 댓글에 대한 답글을 위한 actions
     const actions = [
-        //<LikeDislikes comment commentId={props.comment._id} userId={localStorage.getItem('userId')} />,
+        // 댓글에 좋아요 싫어요 버튼을 위해 설정
+        <LikeDislikes comment commentId={props.comment._id} userId={localStorage.getItem('userId')} />,
         // Reply to 버튼 클릭 시 openReply 작동
         <span onClick={onClickReplyOpen} key="comment-basic-reply-to"> Reply to </span>
     ]
@@ -80,10 +84,10 @@ function SingleComment(props) {
                         style={{ width: '100%', borderRadius: '5px' }}
                         onChange={handleChange}
                         value={CommentValue}
-                        placeholder="write some comments"
+                        placeholder="답글을 작성해주세요!"
                     />
                     <br />
-                    <Button style={{ width: '25%', height: '52px' }} onClick={onSubmit}>답글</Button>
+                    <Button style={{ width: '10%', height: '70px' }} onClick={onSubmit}>답글</Button>
                 </form>
             }
 

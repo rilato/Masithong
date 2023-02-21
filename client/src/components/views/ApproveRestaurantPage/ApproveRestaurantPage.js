@@ -40,8 +40,9 @@ function ApproveRestaurantPage() {
         const variables = {
             restaurantId,
             userFrom
+            
         }
-
+        console.log('a',variables);
         // 백엔드에 해당하는 endpointer 전달
         Axios.post('/api/requestRestaurant/removeRestaurant', variables)
             .then(response => {
@@ -58,6 +59,8 @@ function ApproveRestaurantPage() {
         // RestaurantType 부분
         let RestaurantType;
         
+        console.log('c',restaurant.userFrom);
+        console.log('k',restaurant._id);
         // DB에서 restaurantTypes를 Number로 바꿨으므로, type 변경 없이 switch case문 바로 사용
         switch (restaurant.restaurantTypes){
             case 1:
@@ -103,7 +106,7 @@ function ApproveRestaurantPage() {
 
                 왜냐하면 얘를 감싸고있는 return <tr key={index}>의 내부에 있는 정보들을 가져가서 onClickDelete함수에서 사용해야하기 때문
                 식당의 ID를 나타내는 productId와 어느 유저인지에 해당하는 userFrom을 DB에서 찾아서 지워주기 위해, 이 둘을 인자로 전달함 */}
-            <td><Button style={{ borderRadius: '50px' }} type="primary" onClick={() => onClickDelete(restaurant.restaurantId, restaurant.userFrom)}>Remove</Button></td>
+            <td><Button style={{ borderRadius: '50px' }} type="primary" onClick={() => onClickDelete(restaurant._id,restaurant.userFrom)}>Remove</Button></td>
 
         </tr>
     })

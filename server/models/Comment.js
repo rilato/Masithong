@@ -10,7 +10,7 @@ const commentSchema = mongoose.Schema({
     }, 
     postId: {
         type: Schema.Types.ObjectId,
-        ref: 'Product' // Product.js를 참고하겠다는 의미
+        ref: 'Review' // Review.js를 참고하겠다는 의미
     },
     responseTo: {
         type: Schema.Types.ObjectId,
