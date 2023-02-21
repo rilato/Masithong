@@ -90,7 +90,7 @@ const renderCards= DetailReview.map((Review,index) =>{
   return (
         
     
-      <Row justify="center" >
+      <Row justify="center" key={index} >
              
          
           

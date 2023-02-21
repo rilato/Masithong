@@ -21,10 +21,10 @@ function ReviewInfo(props) {
         const variable = { reviewId : Review._id }
         
         return (
-          <div style={{ margin: '1rem auto'}}>
+          <div style={{ margin: '1rem auto'}} key={index}>
           <hr style = {{ margin: '0.3rem auto'}}/>
-            <Row key={index}>
-                 <Card className="custom-card" bordered={false}
+            <Row >
+                 <Card className="custom-card" bordered={false} 
                     // href를 통해 상품의 _id에 맞게 endpointer를 지정하고, 상품의 상세 페이지를 볼 수 있는 URL을 만들어 줌
                     cover={<a href={`/review/${Review._id}`} ><ImageSlider images={Review.images} /></a>} // card에는 image 정보를 담는다, ImageSlider는 utils/ImageSlider.js에서 구현
                 >
