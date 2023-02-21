@@ -38,10 +38,6 @@ function jsonfunc(){
     return txt;
 }
 
-function Newpassword(){
-    window.location.href="../Newpassword";
-}
-
 function RegisterPage(props){
     const navigate = useNavigate();
     const [name, setname] = useState("");

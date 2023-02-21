@@ -48,7 +48,7 @@ router.get("/auth", auth, (req, res) => {
         name: req.user.name,
         lastname: req.user.lastname,
         role: req.user.role,
-        image: req.user.image,
+        images: req.user.images,
         cart: req.user.cart,
         history: req.user.history,
         nickname:req.user.nickname,
@@ -56,8 +56,8 @@ router.get("/auth", auth, (req, res) => {
 });
 
 router.post('/', (req,res)=>{
-    const User = new User(req.body)
-    User.save((err)=>{
+    const Use = new User(req.body);
+    Use.save((err)=>{
         if(err) return res.status(400).json({success:false, err})
         return res.status(200).json({success:true})
     })
