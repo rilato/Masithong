@@ -218,7 +218,7 @@ function DetailProductPage(props) {
         <div>
           <Select defaultValue="0" onChange={handleSelectChange} 
           options={[{value:"0",label:"별점선택"},{value:'5',label:"별점 5"},{value:'4',label:"별점 4"},{value:'3',label:"별점 3"},{value:'2',label:"별점 2"},{value:'1',label:"별점 1"},]}/>
-          {selectedStarRate > 0 && <Rate value={selectedStarRate} />}
+          {selectedStarRate > 0 && <Rate value={selectedStarRate} disabled defaultValue={selectedStarRate}/>}
         </div>
         
         <div style={{margin: '1rem auto'}}>

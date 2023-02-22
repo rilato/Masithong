@@ -205,11 +205,13 @@ const updateSearchTerm = (newSearchTerm) => {
 
 
 const handleTimeOrder = () => {
+    setSkip(0);
     setTimeOrder(true);
     setLikeOrder(false);
 }
 
 const handleLikeOrder = () => {
+    setSkip(0);
     setTimeOrder(false);
     setLikeOrder(true);
 }
