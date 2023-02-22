@@ -12,7 +12,7 @@ function ImageSlider(props) {
                 { /* map을 통해 이미지 하나 하나 컨트롤 */ }
                 {props.images.map((image, index) => (
                     <div key={index}>
-                        <img style={{ width: '100%', maxHeight: '150px' }}
+                        <img style={{ width: '100%', maxHeight: '230px' }}
                             src={`http://localhost:5000/${image}`} />
                     </div>
                 ))}

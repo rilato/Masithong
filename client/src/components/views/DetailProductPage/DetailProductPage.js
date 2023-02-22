@@ -6,7 +6,7 @@
 import React, { useEffect,  useState } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Row, Col,Avatar,Space,Card ,Select,Rate} from 'antd';
+import { Button, Row, Col, Select, Rate} from 'antd';
 import { useSelector } from "react-redux";
 import ProductImage from './Sections/ProductImage';
 import ProductInfo from './Sections/ProductInfo';
@@ -37,21 +37,16 @@ function DetailProductPage(props) {
   // skip과 limit은 더보기 버튼 구현을 위해 필요
   const [Skip, setSkip] = useState(0) // Skip : 어디서부터 데이터를 가져오는지에 대한 위치(전에거는 스킵하고, 그 다음부터 데이터를 가져오겠다),
   // 처음에는 0부터 시작, Limit이 5라면, 다음 번에는 2rd Skip = 0 + 5
-  const [Limit, setLimit] = useState(5) // Limit : 처음 데이터를 가져올 때와 더보기 버튼을 눌러서 가져올 때 얼마나 많은 데이터를 한 번에 가져오는지 결정하는 메소드
+  const [Limit, setLimit] = useState(6) // Limit : 처음 데이터를 가져올 때와 더보기 버튼을 눌러서 가져올 때 얼마나 많은 데이터를 한 번에 가져오는지 결정하는 메소드
   // 현재는 Limit을 통해, 더보기를 누르기 전에는 8개의 상품만 보이도록 설정
   const [PostSize, setPostSize] = useState(0)
-  // 시간순, 좋아요순, 평점순
-  const [SelectedButton, setSelectedButton] = useState('시간순');
+  const [timeOrder, setTimeOrder] = useState(true); // 시간순
+  const [likeOrder, setLikeOrder] = useState(false); // 좋아요순
+  const [likeCount, setLikeCount] = useState(0);
 
   //별점 순
   
   const [selectedStarRate, setSelectedStarRate] = useState(0);
-  
-  
-
-
-  
-
 
   // useEffect 라는 Hook 을 사용하면 컴포넌트가 마운트 됐을 때 (처음 나타났을 때), 언마운트 됐을 때 (사라질 때), 그리고 업데이트 될 때 (특정 props가 바뀔 때)
   // 특정 작업을 처리하는 역할
@@ -72,11 +67,30 @@ function DetailProductPage(props) {
           skip: Skip, // skip은 0으로 초기화되었으므로 맨 처음 0으로 세팅
           limit: Limit, // limit은 8로 초기화되었으므로 맨 처음 8로 세팅
           productId: productId,
-          
       }
 
-      getReviews(body)
-  }, [])
+      if(timeOrder){
+        getReviews(body)
+      } else if (!timeOrder && (likeCount % 2)) {
+        getReviewsByGrade(body)
+      } else {
+        getReviewsByGradeUp(body)
+      }
+  }, [timeOrder, likeCount])
+
+
+  const handleTimeOrder = () => {
+      setSkip(0);
+      setTimeOrder(true);
+      setLikeOrder(false);
+  }
+
+  const handleLikeOrder = () => {
+      setLikeCount(likeCount + 1);
+      setSkip(0);
+      setTimeOrder(false);
+      setLikeOrder(true);
+  }
 
   const handleSelectChange = (value) => {
     
@@ -94,11 +108,14 @@ function DetailProductPage(props) {
     }
       setSkip(0); 
       setSelectedStarRate(curSelectedStar);
-      getReviews(body);
-    };
 
-  const handleButtonClick = (buttonName) => {
-    setSelectedButton(buttonName);
+      if(timeOrder){
+        getReviews(body)
+      } else if (!timeOrder && (likeCount % 2)) {
+        getReviewsByGrade(body)
+      } else {
+        getReviewsByGradeUp(body)
+      }
   };
 
   const getReviews = (body) => {
@@ -110,8 +127,7 @@ function DetailProductPage(props) {
                 // 이 부분이 없으면, 더보기 버튼을 누르면 이전 상품들이 사라지고, 새롭게 로드된 상품들만 보임 (페이지 추가해서 다음 페이지로 이동시 이걸 써서 구현하면 될 듯)
                 console.log('aaaa',response.data.reviewInfo)
                 if (body.loadMore) {
-                    setReviewLists([...ReviewLists, ...response.data.reviewInfo])
-                    
+                    setReviewLists([...ReviewLists, ...response.data.reviewInfo])   
                 } else {
                     setReviewLists(response.data.reviewInfo)
                     console.log('bbbb',ReviewLists);
@@ -123,6 +139,51 @@ function DetailProductPage(props) {
             }
         })
   }
+
+  const getReviewsByGrade = (body) => {
+    axios.post('/api/review/reviews_by_grade', body) // endpointer 설정, 백엔드의 product.js와 연관
+        .then(response => {
+            // 백엔드(product.js)에서 데이터 가져오는데 성공한 경우
+            if (response.data.success) {
+                // loadMoreHandler의 body에서 loadMore가 true인 상황인 경우, 더보기 버튼을 눌렀을 때 기존의 상품들과 더불어 추가된 상품이 함께 보이도록 함
+                // 이 부분이 없으면, 더보기 버튼을 누르면 이전 상품들이 사라지고, 새롭게 로드된 상품들만 보임 (페이지 추가해서 다음 페이지로 이동시 이걸 써서 구현하면 될 듯)
+                console.log('aaaa',response.data.reviewInfo)
+                if (body.loadMore) {
+                    setReviewLists([...ReviewLists, ...response.data.reviewInfo])  
+                } else {
+                    setReviewLists(response.data.reviewInfo)
+                    console.log('bbbb',ReviewLists);
+                }
+                setPostSize(response.data.postSize) // 더보기 버튼을 보이게 할지 안보이게 할지를 설정
+            // 실패한 경우
+            } else {
+                alert(" 상품들을 가져오는데 실패 했습니다.")
+            }
+        })
+  }
+
+  const getReviewsByGradeUp = (body) => {
+    axios.post('/api/review/reviews_by_grade_up', body) // endpointer 설정, 백엔드의 product.js와 연관
+        .then(response => {
+            // 백엔드(product.js)에서 데이터 가져오는데 성공한 경우
+            if (response.data.success) {
+                // loadMoreHandler의 body에서 loadMore가 true인 상황인 경우, 더보기 버튼을 눌렀을 때 기존의 상품들과 더불어 추가된 상품이 함께 보이도록 함
+                // 이 부분이 없으면, 더보기 버튼을 누르면 이전 상품들이 사라지고, 새롭게 로드된 상품들만 보임 (페이지 추가해서 다음 페이지로 이동시 이걸 써서 구현하면 될 듯)
+                console.log('aaaa',response.data.reviewInfo)
+                if (body.loadMore) {
+                    setReviewLists([...ReviewLists, ...response.data.reviewInfo])  
+                } else {
+                    setReviewLists(response.data.reviewInfo)
+                    console.log('bbbb',ReviewLists);
+                }
+                setPostSize(response.data.postSize) // 더보기 버튼을 보이게 할지 안보이게 할지를 설정
+            // 실패한 경우
+            } else {
+                alert(" 상품들을 가져오는데 실패 했습니다.")
+            }
+        })
+  }
+
   // 더보기 버튼 구현을 위한 함수
   const loadMoreHandler = () => {
     // 더보기를 눌렀을 때, 그 다음 물품을 가져와야 하므로, skip을 재조정
@@ -135,7 +196,14 @@ function DetailProductPage(props) {
         
     }
 
-    getReviews(body)
+    if(timeOrder){
+      getReviews(body)
+    } else if (!timeOrder && (likeCount % 2)) {
+      getReviewsByGrade(body)
+    } else {
+      getReviewsByGradeUp(body)
+    }
+
     setSkip(skip)
   }
 
@@ -193,23 +261,11 @@ function DetailProductPage(props) {
           <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
             Review
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button
-              type={SelectedButton === '시간순' ? 'primary' : 'default'}
-              onClick={() => handleButtonClick('시간순')}
-            >
-              시간순
+            <Button type={timeOrder ? "primary" : "default"} onClick={handleTimeOrder}>
+                시간순
             </Button>
-            <Button
-              type={SelectedButton === '좋아요순' ? 'primary' : 'default'}
-              onClick={() => handleButtonClick('좋아요순')}
-            >
-              좋아요순
-            </Button>
-            <Button
-              type={SelectedButton === '평점순' ? 'primary' : 'default'}
-              onClick={() => handleButtonClick('평점순')}
-            >
-              평점순
+            <Button type={likeOrder ? "primary" : "default"} onClick={handleLikeOrder}>
+                평점순
             </Button>
           </div>
           
@@ -283,23 +339,11 @@ function DetailProductPage(props) {
           <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
             Review
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button
-              type={SelectedButton === '시간순' ? 'primary' : 'default'}
-              onClick={() => handleButtonClick('시간순')}
-            >
-              시간순
+            <Button type={timeOrder ? "primary" : "default"} onClick={handleTimeOrder}>
+                시간순
             </Button>
-            <Button
-              type={SelectedButton === '좋아요순' ? 'primary' : 'default'}
-              onClick={() => handleButtonClick('좋아요순')}
-            >
-              좋아요순
-            </Button>
-            <Button
-              type={SelectedButton === '평점순' ? 'primary' : 'default'}
-              onClick={() => handleButtonClick('평점순')}
-            >
-              평점순
+            <Button type={likeOrder ? "primary" : "default"} onClick={handleLikeOrder}>
+                평점순
             </Button>
           </div>
           
