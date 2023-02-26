@@ -16,11 +16,12 @@ const { User } = require("./models/User");     // require를 통해 User.js의 �
 // bodyParser가 client에서 오는 정보를 서버에서 분석해서 가져올 수 있도록 하기 위해 아래의 코드 사용
 // url을 encoded한다.
 // https://studyingych.tistory.com/34 에서 1-3 req.body 참고
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // application/json 가져오는데 사용
 // bodyParser는 express 뒤에 붙여서 사용함. 여기서 app은 express
-app.use(bodyParser.json());
+
 app.use(cookieParser());
 
 app.use(cors())

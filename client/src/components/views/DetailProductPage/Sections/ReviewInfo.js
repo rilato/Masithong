@@ -11,25 +11,54 @@ import Axios from 'axios';
 import {useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
+const baseURL = `/api/users`;
+
 function ReviewInfo(props) {
     
-    const USER = useSelector(state => state.USER);
-    const {userId} = useParams();
+    const USER = useSelector(state => state.user);
+    const userId = '63fb7a19becdca233393f934';
     const [Reviews, setReview] = useState([])
     const [Images, setImages] = useState([])
     
-    useEffect(() => {
-      Axios.get(`/api/users/users_by_id?id=${userId}&type=single`).then((response) => {
+    /*useEffect(() => {
+      Axios.post(`/api/users/register`).then((response) => {
         if(response.data.success)
         {
-          setImages(response.data[0])
+          setImages(response.data.images[0])
+          console.log("UserId: ",userId);
+          console.log("response.data[0] ",response.data[0]);
         }
         else{
           console.log(response.error);
           alert("이미지 가져오기 실패")
         }
       });
-    },[]);
+    },[]);*/
+
+
+    const downloadFiles = Axios.create({
+        baseURL,
+        headers: {"Content-type":"fomr-data"},
+        timeout: 5000,
+    });
+
+    const onImageListClick = async (imageId) => {
+      await downloadFiles.post("/register", {imageId})
+      .then(({data}) => {
+         const newFile = new File([data], imageId);
+         const reader = new FileReader();
+         reader.onload = (event) => {
+          const previewImage = String(event.target?.result);
+          setImages(previewImage);
+         };
+         reader.readAsDataURL(newFile);
+      });
+    }
+
+    useEffect(() => {
+      onImageListClick();
+    }, [])
+    
 
     useEffect(()=>{
         setReview(props.ReviewLists)
@@ -60,7 +89,7 @@ function ReviewInfo(props) {
             <div className="card-body">
               <div style={{ display: "flex", justifyContent: "space-between"}}>
                 <div style={{ float: "left", justifyContent: "flex-start", fontWeight:"bold" }}>
-                <h6 className="card-title"><Avatar size={30} icon={Images}/>&nbsp;{Review.writer.name}</h6>
+                <h6 className="card-title"><img src = {Images} />{/*<Avatar size={30} icon={Images}/>*/}&nbsp;{Review.writer.name}</h6>
                 </div>
                 <div style={{ float: "right", justifyContent: "flex-end" }}>
                 <LikeInfo Review={Review}/>

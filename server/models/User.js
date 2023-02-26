@@ -4,8 +4,16 @@ const saltRounds = 10   // 10자리의 비밀번호인 솔트라운즈
 const jwt = require('jsonwebtoken');    // 토큰을 통한 회원 인증과 정보 교류에 사용되는 라이브러리
 const moment = require("moment");   // 날짜 데이터를 사용하기 위한 라이브러리
 
+const Schema = mongoose.Schema;
+
 // 몽고디비에 넣을 데이터가 어떻게 생겼는지 여기서 결정
 const userSchema = mongoose.Schema({
+
+    Username:{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+
     images:{
         type: Array,
         default: []

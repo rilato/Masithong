@@ -132,7 +132,7 @@ router.get("/logout", auth, (req, res) => {
 
 router.get('/users_by_id', (req,res) => {
     let type = req.query.type
-    let UserIds = req.query.diskStorage
+    let UserIds = req.query.id
     if(type == "array")
     {
         let ids = req.query.id.split(',')
@@ -140,6 +140,13 @@ router.get('/users_by_id', (req,res) => {
             return item
         })
     }
+
+    User.find({_id: {$in: UserIds}})
+      .populate('Username')
+      .exec((err,user)=>{
+        if(err) return res.status(400).send(err)
+        return res.status(200).send(user)
+      })
 })
 
 
