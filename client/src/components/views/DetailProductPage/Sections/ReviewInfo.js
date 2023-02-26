@@ -1,21 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Card, Row, Descriptions, Avatar } from 'antd'; // Carousel은 한 카테고리 안에 여러 이미지를 슬라이드하며 볼 수 있게 하는 기능, utils/ImageSlider.js에서 구현
-import { UserOutlined } from '@ant-design/icons';
+import { ConsoleSqlOutlined, UserOutlined } from '@ant-design/icons';
 import ImageSlider from '../../../utils/ImageSlider';
 import styled from 'styled-components';
 import { Rate } from 'antd';
 import LikeInfo from './LikeInfo';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ReviewInfo.css';
-
+import Axios from 'axios';
+import {useParams} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 function ReviewInfo(props) {
+    
+    const USER = useSelector(state => state.USER);
+    const {userId} = useParams();
     const [Reviews, setReview] = useState([])
+    const [Images, setImages] = useState([])
+    
+    useEffect(() => {
+      Axios.get(`/api/users/users_by_id?id=${userId}&type=single`).then((response) => {
+        if(response.data.success)
+        {
+          setImages(response.data[0])
+        }
+        else{
+          console.log(response.error);
+          alert("이미지 가져오기 실패")
+        }
+      });
+    },[]);
 
     useEffect(()=>{
         setReview(props.ReviewLists)
     }, [props.ReviewLists])
-    
+
+ 
     
     const renderCards = Reviews.map((Review,index) => {
         let time=Review.createdAt;
@@ -40,7 +60,7 @@ function ReviewInfo(props) {
             <div className="card-body">
               <div style={{ display: "flex", justifyContent: "space-between"}}>
                 <div style={{ float: "left", justifyContent: "flex-start", fontWeight:"bold" }}>
-                <h6 className="card-title"><Avatar size={30} icon={<UserOutlined/>}/>&nbsp;{Review.writer.name}</h6>
+                <h6 className="card-title"><Avatar size={30} icon={Images}/>&nbsp;{Review.writer.name}</h6>
                 </div>
                 <div style={{ float: "right", justifyContent: "flex-end" }}>
                 <LikeInfo Review={Review}/>

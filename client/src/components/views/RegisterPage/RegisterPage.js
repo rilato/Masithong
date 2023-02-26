@@ -88,7 +88,7 @@ function RegisterPage(props){
             images : Images,
         }
 
-        axios.post('api/users',body)
+        axios.post('/api/users/register',body)
         .then(response => {
             if (response.data.success) {
                 alert('회원가입에 성공 했습니다.')
@@ -130,7 +130,7 @@ function RegisterPage(props){
                 <br />
                 <br />
                 <label>Email</label>
-                <Input onChange={updateEmail} value={jsonfunc()} />
+                <Input onChange={updateEmail} value={email} />
                 <br />
                 <br />
                 <label>Password</label>
