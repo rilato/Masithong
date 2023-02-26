@@ -121,11 +121,11 @@ const renderCards = Products.map((product, index) => {
     // 한 row는 24사이즈이므로, 화면이 가장 클 때에는 4개의 이미지가 들어가도록 6, 화면이 약간 작을 때에는 3개의 이미지가 들어가도록 8,
     // 가장 작을 떄에는 1개의 이미지가 들어가도록 24
     return <Col lg={6} md={8} xs={24} key={index}>
-        <Card
+        <Card 
             // href를 통해 상품의 _id에 맞게 endpointer를 지정하고, 상품의 상세 페이지를 볼 수 있는 URL을 만들어 줌
             cover={<a href={`/product/${product._id}`} ><ImageSlider images={product.images} /></a>} // card에는 image 정보를 담는다, ImageSlider는 utils/ImageSlider.js에서 구현
         >
-            <Meta
+            <Meta 
                 title={product.title}
                 description={[<div>평점 : {product.averageStar.toFixed(1)}점</div>, <div>1인당 예상 가격 : ￦{product.price}</div>]}
                 //description={`￦${product.price}`}   // ￦는 사용자에게 표시되어야하는 문자이므로, 여기에 추가하여 기입
@@ -205,11 +205,13 @@ const updateSearchTerm = (newSearchTerm) => {
 
 
 const handleTimeOrder = () => {
+    setSkip(0);
     setTimeOrder(true);
     setLikeOrder(false);
 }
 
 const handleLikeOrder = () => {
+    setSkip(0);
     setTimeOrder(false);
     setLikeOrder(true);
 }

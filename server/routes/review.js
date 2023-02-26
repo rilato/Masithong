@@ -55,8 +55,18 @@ router.post('/reviews', (req, res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 20; // limit이 존재하면 parseInt(req.body.limit)을 통해 limit을 숫자로 변경, 존재하지 않으면 20으로 설정
     let skip = req.body.skip ? parseInt(req.body.skip) : 0; // skip이 존재하면 skip을 숫자로 변경, 존재하지 않으면 0으로 설정
 
+    let findArgs={};
 
-    Review.find({"restaurantId" : req.body.productId})
+    if(req.body.selectedStarRate) //열람하려고 하는 별점이 선택됐다면 findArgs설정
+    {
+        findArgs["grade"]=req.body.selectedStarRate;
+        console.log('findArgs',findArgs);
+    } 
+
+    if(req.body.selectedStarRate) //열람하려고 하는 별점이 선택됐다면
+    {
+        Review.find({"restaurantId" : req.body.productId})
+        .find(findArgs)
         // 해당 상품이 없으므로, 여기서 .find를 한 번 더 써주지 않음
         .populate("writer")
         .sort([[sortBy, order]])
@@ -69,9 +79,128 @@ router.post('/reviews', (req, res) => {
                 postSize: reviewInfo.length // postSize는 reviewInfo.length로 정의
             })
         })
-
+    }
+    else{ //열람하려고 하는 별점이 선택안됐다면
+        Review.find({"restaurantId" : req.body.productId})
+        
+        // 해당 상품이 없으므로, 여기서 .find를 한 번 더 써주지 않음
+        .populate("writer")
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, reviewInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            return res.status(200).json({
+                success: true, reviewInfo,
+                postSize: reviewInfo.length // postSize는 reviewInfo.length로 정의
+            })
+        })
+    }
 })
 
+
+router.post('/reviews_by_grade', (req, res) => {
+    // post request를 이용해서 필요한 값을 프론트엔드에서 가져올 때엔 req.body.~을 사용하지만, get request에서는 req.query.~를 사용!!
+    let order = req.body.order ? req.body.order : "desc";   // .order = 정렬 방법 : 내림차순
+    let sortBy = req.body.sortBy ? req.body.sortBy : "grade"; // .sortBy = 기준 칼럼 : _id
+    // DetailProductPage.js에서 보내온 skip과 limit 정보를 받아옴
+    let limit = req.body.limit ? parseInt(req.body.limit) : 20; // limit이 존재하면 parseInt(req.body.limit)을 통해 limit을 숫자로 변경, 존재하지 않으면 20으로 설정
+    let skip = req.body.skip ? parseInt(req.body.skip) : 0; // skip이 존재하면 skip을 숫자로 변경, 존재하지 않으면 0으로 설정
+
+    let findArgs={};
+
+    if(req.body.selectedStarRate) //열람하려고 하는 별점이 선택됐다면 findArgs설정
+    {
+        findArgs["grade"]=req.body.selectedStarRate;
+        console.log('findArgs',findArgs);
+    } 
+
+    if(req.body.selectedStarRate) //열람하려고 하는 별점이 선택됐다면
+    {
+        Review.find({"restaurantId" : req.body.productId})
+        .find(findArgs)
+        // 해당 상품이 없으므로, 여기서 .find를 한 번 더 써주지 않음
+        .populate("writer")
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, reviewInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            return res.status(200).json({
+                success: true, reviewInfo,
+                postSize: reviewInfo.length // postSize는 reviewInfo.length로 정의
+            })
+        })
+    }
+    else{ //열람하려고 하는 별점이 선택안됐다면
+        Review.find({"restaurantId" : req.body.productId})
+        
+        // 해당 상품이 없으므로, 여기서 .find를 한 번 더 써주지 않음
+        .populate("writer")
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, reviewInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            return res.status(200).json({
+                success: true, reviewInfo,
+                postSize: reviewInfo.length // postSize는 reviewInfo.length로 정의
+            })
+        })
+    }
+})
+
+
+router.post('/reviews_by_grade_up', (req, res) => {
+    // post request를 이용해서 필요한 값을 프론트엔드에서 가져올 때엔 req.body.~을 사용하지만, get request에서는 req.query.~를 사용!!
+    let order = req.body.order ? req.body.order : "asc";   // .order = 정렬 방법 : 내림차순
+    let sortBy = req.body.sortBy ? req.body.sortBy : "grade"; // .sortBy = 기준 칼럼 : _id
+    // DetailProductPage.js에서 보내온 skip과 limit 정보를 받아옴
+    let limit = req.body.limit ? parseInt(req.body.limit) : 20; // limit이 존재하면 parseInt(req.body.limit)을 통해 limit을 숫자로 변경, 존재하지 않으면 20으로 설정
+    let skip = req.body.skip ? parseInt(req.body.skip) : 0; // skip이 존재하면 skip을 숫자로 변경, 존재하지 않으면 0으로 설정
+
+    let findArgs={};
+
+    if(req.body.selectedStarRate) //열람하려고 하는 별점이 선택됐다면 findArgs설정
+    {
+        findArgs["grade"]=req.body.selectedStarRate;
+        console.log('findArgs',findArgs);
+    } 
+
+    if(req.body.selectedStarRate) //열람하려고 하는 별점이 선택됐다면
+    {
+        Review.find({"restaurantId" : req.body.productId})
+        .find(findArgs)
+        // 해당 상품이 없으므로, 여기서 .find를 한 번 더 써주지 않음
+        .populate("writer")
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, reviewInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            return res.status(200).json({
+                success: true, reviewInfo,
+                postSize: reviewInfo.length // postSize는 reviewInfo.length로 정의
+            })
+        })
+    }
+    else{ //열람하려고 하는 별점이 선택안됐다면
+        Review.find({"restaurantId" : req.body.productId})
+        
+        // 해당 상품이 없으므로, 여기서 .find를 한 번 더 써주지 않음
+        .populate("writer")
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, reviewInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            return res.status(200).json({
+                success: true, reviewInfo,
+                postSize: reviewInfo.length // postSize는 reviewInfo.length로 정의
+            })
+        })
+    }
+})
 
 // EditReviewPage.js에서 get request를 요청하면, 여기서 식당 ID에 관련된 모든 리뷰를 찾아 다시 보내줌. 
 router.post('/reviews_by_id', (req, res) => {
