@@ -16,6 +16,7 @@ import { Rate } from 'antd';
 import Comments from './Sections/Comments';
 import DetailReviewImage from './Sections/DetailReviewImage';
 import LikeDislikes from './Sections/LikeDislikes';
+import { Card, Badge } from 'react-bootstrap';
 
 function DetailReviewPage() {
   const user = useSelector(state => state.user)
@@ -63,9 +64,11 @@ function DetailReviewPage() {
         })
 
 
-     
+       
     
 },[])
+
+
 
 
 
@@ -89,11 +92,27 @@ const renderCards= DetailReview.map((Review,index) =>{
    console.log(realTime[0]);
   return (
         
-    
-      <Row justify="center" key={index} >
+      <div>
+          <Card className="mb-4">
+      <Card.Body>
+        <div className="d-flex align-items-center mb-3">
+          <Avatar size={48} icon={<UserOutlined />} />
+          <h5 className="ms-3 mb-0">{Review.writer.name}</h5>
+        </div>
+        <Card.Title>{Review.restaurantId.title}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{realTime[0]}</Card.Subtitle>
+        <Rate style={{ marginTop: '12px' }}  disabled defaultValue={Review.grade} />{`\(${Review.grade}점\)`} 
+        <Card.Text className="mt-3">{Review.review}</Card.Text>
+      </Card.Body>
+      <Col align="middle">
+          <DetailReviewImage detail={Review}/>
+         </Col>
+    </Card>
+    {/*}
+    <Row justify="center" key={index} >
              
          
-          
+             
         <Col align="middle" margin="20%" style={{ marginBottom: '30px' }}  >
          <Descriptions layout='horizontal' size="small" >
              <Descriptions.Item ><Avatar size={48} icon={<UserOutlined/>}/> 
@@ -108,16 +127,16 @@ const renderCards= DetailReview.map((Review,index) =>{
          
         </Col>
          
-
+  */}
         
          
          
          
-         <Col align="middle">
-          <DetailReviewImage detail={Review}/>
-         </Col>
+         
 
-       </Row>    
+       {/*</Row>*/}    
+      </div>
+      
 )})
 
 
