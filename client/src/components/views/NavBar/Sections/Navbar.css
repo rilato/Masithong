@@ -13,12 +13,15 @@
 .menu__logo {
   width: 150px;
   float: left;
+  
 }
+
 
 .menu__logo a {
   display: inline-block;
   font-size: 20px;
   padding: 19px 20px;
+  
 }
 
 .menu__container .ant-menu-item {
@@ -46,7 +49,7 @@
 
 .menu__container .menu_rigth {
   float: right;
-  width: 40%;
+  width: 35%;
   padding: 9px 10px;
 }
 

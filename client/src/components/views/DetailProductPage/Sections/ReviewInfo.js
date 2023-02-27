@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './ReviewInfo.css';
 
 
+
 function ReviewInfo(props) {
     const [Reviews, setReview] = useState([])
 
@@ -78,10 +79,7 @@ function ReviewInfo(props) {
                 </Col>
               ))}
             </Row>
-
             
-            
-        
 
         </div>
     )

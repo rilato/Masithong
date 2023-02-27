@@ -6,6 +6,7 @@ import LeftMenu from './Sections/LeftMenu';
 import RightMenu from './Sections/RightMenu';
 import { Drawer, Button } from 'antd';
 import Icon, { SmileOutlined } from '@ant-design/icons';
+
 import './Sections/Navbar.css';
 
 function NavBar() {
