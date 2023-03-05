@@ -30,6 +30,7 @@ import UploadRequestedProductPage from "./views/UploadRequestedProductPage/Uploa
 import EditReviewPage from "./views/EditReviewPage/EditReviewPage";
 import Footer from "./views/Footer/Footer";
 import YoutubePage from "./views/YoutubePage/YoutubePage";
+import MyPage from "./views/MyPage/MyPage";
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -124,6 +125,10 @@ function App() {
                         <Route
                             path="/youtube"
                             element={Auth(YoutubePage, true)}
+                        />
+                        <Route 
+                            path="/mypage"
+                            element={Auth(MyPage, null)}
                         />
                     </Routes>
                 </div>

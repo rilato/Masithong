@@ -22,6 +22,9 @@ function RightMenu(props) {
             }
         });
     };
+    const MyPageHandler =() =>{
+        navigate("/mypage");
+    }
 
     // 쿠키에 저장 X. 로그아웃 안하고 껐다가 다시 켜면 로그아웃된 상태로 시작. 다만 UI가 이상해서, 로그아웃 상태인데 마치 로그인 된 상태처럼 우측 상단에 업로드와 로그아웃이 뜸
     // => 그래서 /login endpointer를 쳐주지 않으면, 로그인을 할 수 없는 상황 발생
@@ -81,7 +84,7 @@ function RightMenu(props) {
                 </Menu.Item>
                 <Menu.Item key="mypage">
                     {/** 아직 구현되지 않은 부분, onClick event를 추가하여, 마이페이지로 이동하도록 코딩 필요 */}
-                    마이페이지
+                    <a onClick={MyPageHandler}>마이페이지</a>
                 </Menu.Item>
                 <Menu.Item key="logout">
                     <a onClick={logoutHandler}>로그아웃</a>
