@@ -13,6 +13,7 @@ import {useSelector} from 'react-redux';
 
 const baseURL = `/api/users`;
 
+
 function ReviewInfo(props) {
     
     const USER = useSelector(state => state.user);
@@ -127,10 +128,7 @@ function ReviewInfo(props) {
                 </Col>
               ))}
             </Row>
-
             
-            
-        
 
         </div>
     )

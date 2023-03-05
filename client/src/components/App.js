@@ -29,6 +29,7 @@ import DetailReviewPage from "./views/DetailReviewPage/DetailReviewPage";
 import UploadRequestedProductPage from "./views/UploadRequestedProductPage/UploadRequestedProductPage";
 import EditReviewPage from "./views/EditReviewPage/EditReviewPage";
 import Footer from "./views/Footer/Footer";
+import YoutubePage from "./views/YoutubePage/YoutubePage";
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -118,6 +119,11 @@ function App() {
                         <Route
                             path="/product/uploadReview/:productId"
                             element={Auth(UploadReviewPage, true)}
+                        />
+
+                        <Route
+                            path="/youtube"
+                            element={Auth(YoutubePage, true)}
                         />
                     </Routes>
                 </div>

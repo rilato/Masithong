@@ -15,11 +15,9 @@ function ProductInfo(props) {
                 {/*<Descriptions.Item label="Sold">{props.detail.sold}</Descriptions.Item>*/}
                 {/*<Descriptions.Item label="View">{props.detail.views}</Descriptions.Item>*/}
                 
-                <Descriptions.Item label="간략한 정보">{props.detail.description}</Descriptions.Item>
+                <Descriptions.Item label="카테고리">{props.detail.description}</Descriptions.Item>
                 
-                <Descriptions.Item label="식당 상세정보 링크"><a href={`https://search.naver.com/search.naver?&where=nexearch&query=${props.detail.title}`}>이동하기</a></Descriptions.Item>
-                
-                <Descriptions.Item label="식당 위치정보 링크"><a href={`https://map.naver.com/v5/search/${props.detail.title}`}>이동하기</a></Descriptions.Item>
+                <Descriptions.Item label="네이버 링크"><a href={`https://search.naver.com/search.naver?&where=nexearch&query=${props.detail.title}`}>이동하기</a></Descriptions.Item>
 
                 <Descriptions.Item label="식당 주소">{props.detail.address}</Descriptions.Item>
 
