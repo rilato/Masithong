@@ -59,7 +59,7 @@ function ProductImage(props) {
             })
             setImages(images)
         }
-
+        
     }, [props.detail]) // props.detail을 쓰지 않으면 useEffect가 image를 가져오지 못함.
     // props.detail을 써주면 props.detail 값이 바뀔 때 마다 life cycle이 한 번 더 실행되어 image를 가져올 수 있음
 
