@@ -23,6 +23,7 @@ function MyPage(){
             console.log(userlastname)
             console.log(useremail)
             console.log(usernickname)
+            console.log(userimage)
         })
     },[username,userlastname,useremail,usernickname])
    
