@@ -123,7 +123,7 @@ function App() {
 
                         <Route
                             path="/youtube"
-                            element={Auth(YoutubePage, true)}
+                            element={Auth(YoutubePage, null)}
                         />
                     </Routes>
                 </div>
